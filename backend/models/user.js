@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema(
       trim: true,
       required: true,
     },
-    securepassword: {
+    password: {
       type: String,
       required: true,
       min: 3,
@@ -27,7 +27,7 @@ const userSchema = new mongoose.Schema(
       type: Number,
       default: 0,
       // 0 - simple user - reader
-      // 1 - staff /
+      // 1 - author /
       // 2 - admin / superuser
     },
     userdetails: {
