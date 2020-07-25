@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-   "start": "node backend/server/app.js",
+    "start": "node backend/server/app.js",
     "backend": "nodemon backend/server/app.js",
     "frontendinstall": "npm install --prefix frontend",
     "frontend": "npm start --prefix frontend",
