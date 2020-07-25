@@ -1,27 +1,34 @@
-const mongoose = require("mongoose")
-
+const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const userSchema = new mongoose.Schema(
   {
     name: {
       type: String,
       trim: true,
       min: 3,
-      required: true,
+      required: [true, 'Please provide a name'],
     },
     age: {
       type: Number,
       trim: true,
-      required: true,
+      required: [true, 'Please provide an age'],
     },
     email: {
       type: String,
       trim: true,
-      required: true,
+      unique: true,
+      match: [
+        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+        'Please provide a valid email',
+      ],
+      required: [true, 'Please provide an email'],
     },
     password: {
       type: String,
-      required: true,
-      min: 3,
+      required: [true, 'Please provide a password'],
+      minlength: [6, 'Password should be atleast 6 characters'],
+      select: false, //never returns password when we call user
     },
     role: {
       type: Number,
@@ -47,6 +54,21 @@ const userSchema = new mongoose.Schema(
     },
   },
   { timestamps: true }
-)
-
-module.exports = mongoose.model("User", userSchema)
+);
+userSchema.pre('save', async function (next) {
+  const user = this;
+  const salt = await bcrypt.genSalt(10);
+  user.password = await bcrypt.hash(user.password, salt);
+  next();
+});
+userSchema.methods.getSignedJwtToken = function () {
+  const user = this;
+  return jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRE,
+  });
+};
+userSchema.methods.comparePasswords = async function (plainPassword) {
+  const user = this;
+  return await bcrypt.compare(plainPassword, user.password);
+};
+module.exports = mongoose.model('User', userSchema);
