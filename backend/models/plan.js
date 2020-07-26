@@ -1,6 +1,6 @@
-const mongosse = require("mongoose")
+const mongoose = require("mongoose")
 
-const planSchema = new mongosse.Schema(
+const planSchema = new mongoose.Schema(
   {
     title: {
       type: String,
@@ -37,4 +37,4 @@ const planSchema = new mongosse.Schema(
   { timestamps: true } //it gives the timestamp of the creation}
 )
 
-module.exports = mongosse.model("Plan", planSchema)
+module.exports = mongoose.model("Plan", planSchema)
