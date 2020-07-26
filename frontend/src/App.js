@@ -1,12 +1,18 @@
-import React from 'react';
-import './App.css';
+import React from "react"
+import { BrowserRouter as Router } from "react-router-dom"
+import "./App.scss"
+import { Routing } from "./components/common/Routing"
+import { Header } from "./components/common/Header"
+import { Footer } from "./components/common/Footer"
 
 function App() {
   return (
-    <div>
-	<h1>Library Management System</h1>
-    </div>
-  );
+    <Router>
+      <Header />
+      <Routing />
+      <Footer />
+    </Router>
+  )
 }
 
-export default App;
+export default App
