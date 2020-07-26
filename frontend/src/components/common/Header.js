@@ -22,7 +22,7 @@ export const Header = () => {
             </li>
 
             <li className='nav-item'>
-              <Link to='/register' class='nav-link'>
+              <Link to='/register' className='nav-link'>
                 Register
               </Link>
             </li>
