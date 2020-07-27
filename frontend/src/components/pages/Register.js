@@ -36,39 +36,46 @@ export const Register = () => {
     password: inputvalue.password,
   }
 
-  const handleFormSubmit = (event) => {
+  const handleFormSubmit = async (event) => {
     event.preventDefault()
     const uri = "api/v1/auth/register"
 
-    if (
-      inputvalue.uname ||
-      inputvalue.age ||
-      inputvalue.email ||
-      inputvalue.password
-    ) {
-      if (validator.isEmail(inputvalue.email)) {
-        if (inputvalue.password.length > 5) {
-          axios.post(uri, formData).then((response) => {
+    try {
+      if (
+        inputvalue.uname ||
+        inputvalue.age ||
+        inputvalue.email ||
+        inputvalue.password
+      ) {
+        if (validator.isEmail(inputvalue.email)) {
+          if (inputvalue.password.length > 5) {
+            const response = await axios.post(uri, formData)
             console.log(response)
-          })
+          } else {
+            seterrorMsg({
+              status: true,
+              msg: "Password should be atleast 6 characters",
+              color: "danger",
+            })
+          }
         } else {
           seterrorMsg({
             status: true,
-            msg: "Password should be atleast 6 characters",
+            msg: "Please provide a valid email",
             color: "danger",
           })
         }
       } else {
         seterrorMsg({
           status: true,
-          msg: "Please provide a valid email",
+          msg: "Please fill in all the details",
           color: "danger",
         })
       }
-    } else {
+    } catch (error) {
       seterrorMsg({
         status: true,
-        msg: "Please fill in all the details",
+        msg: error.response.data.error,
         color: "danger",
       })
     }
