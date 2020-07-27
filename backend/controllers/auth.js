@@ -3,9 +3,11 @@ const ErrorResponse = require('../utils/errorResponse'); //custom error response
 const asyncHandler = require('../middlewares/asyncHandler'); //avoid using try and catch
 const jwt = require('jsonwebtoken');
 const sgMail = require('@sendgrid/mail');
+const { sendEmail } = require('../utils/sendEmail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 templates = {
   confirm_account: process.env.CONFIRM_ACCOUNT_TEMPLATE_ID,
+  reset_password: process.env.RESET_PASSWORD_TEMPLATE_ID,
 };
 const sendTokenResponse = (user, statusCode, res) => {
   const token = user.getSignedJwtToken();
@@ -29,7 +31,6 @@ const sendTokenResponse = (user, statusCode, res) => {
 
 exports.registerUser = asyncHandler(async (req, res, next) => {
   const { name, age, email, password } = req.body;
-  console.log(name, age, email, password);
   const user = await User.create({ name, age, email, password });
   jwt.sign(
     { id: user._id },
@@ -38,27 +39,12 @@ exports.registerUser = asyncHandler(async (req, res, next) => {
       expiresIn: process.env.EMAIL_EXPIRE,
     },
     (err, emailToken) => {
-      console.log(process.env.SENDER_EMAIL);
-      const url = `http://localhost:5000/api/v1/auth/confirmation/${emailToken}`;
-      const msg = {
-        to: user.email,
-        from: process.env.SENDER_EMAIL,
-        templateId: templates['confirm_account'],
-        dynamic_template_data: {
-          name: user.name,
-          confirm_account: url,
-        },
-      };
-      sgMail.send(msg, (error, result) => {
-        if (error) {
-          console.log(error.body);
-        } else {
-          console.log('mail sent!');
-        }
-      });
+      const url = `${req.protocol}://${req.get(
+        'host'
+      )}/api/v1/auth/confirmation/${emailToken}`;
+      sendEmail(url, user, process.env.CONFIRM_ACCOUNT);
     }
   );
-
   sendTokenResponse(user, 200, res);
 });
 
@@ -108,6 +94,18 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
   }
   const resetToken = user.getResetPasswordToken();
   await user.save({ validateBeforeSave: false });
+  const url = `${req.protocol}://${req.get(
+    'host'
+  )}/api/auth/v1/resetpassword/${resetToken}`;
+  try {
+    await sendEmail(url, user, process.env.RESET_PASSWORD);
+  } catch (err) {
+    user.getResetPasswordToken = undefined;
+    user.resetPasswordExpire = undefined;
+    await user.save({ validateBeforeSave: false });
+    return next(new ErrorResponse('failed to send reset password mail', 500));
+  }
+
   return res.status(200).json({ success: true, data: user });
 });
 exports.confirmUser = asyncHandler(async (req, res, next) => {
