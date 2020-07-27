@@ -2,6 +2,7 @@ const User = require('../models/user');
 const ErrorResponse = require('../utils/errorResponse'); //custom error response
 const asyncHandler = require('../middlewares/asyncHandler'); //avoid using try and catch
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 const sgMail = require('@sendgrid/mail');
 const { sendEmail } = require('../utils/sendEmail');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -20,9 +21,11 @@ const sendTokenResponse = (user, statusCode, res) => {
   if (process.env.NODE_ENV === 'production') {
     options.secure = true;
   }
+  user.password = undefined;
+
   res.status(statusCode).cookie('token', token, options).json({
     success: true,
-    token,
+    user,
   });
 };
 // @desc    Register User
@@ -85,8 +88,8 @@ exports.logoutUser = asyncHandler(async (req, res, next) => {
 });
 
 // @desc    Forgot Password
-// @route   GET /api/v1/auth/me
-// @access  private
+// @route   GET /api/v1/auth/forgotpassword
+// @access  public
 exports.forgotPassword = asyncHandler(async (req, res, next) => {
   const user = await User.findOne({ email: req.body.email });
   if (!user) {
@@ -96,7 +99,7 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
   await user.save({ validateBeforeSave: false });
   const url = `${req.protocol}://${req.get(
     'host'
-  )}/api/auth/v1/resetpassword/${resetToken}`;
+  )}/api/v1/auth/resetpassword/${resetToken}`;
   try {
     await sendEmail(url, user, process.env.RESET_PASSWORD);
   } catch (err) {
@@ -113,4 +116,25 @@ exports.confirmUser = asyncHandler(async (req, res, next) => {
   await User.findByIdAndUpdate(decoded.id, { confirmed: true }, { new: true });
   res.json({ success: true, msg: 'account verified' });
   // return res.redirect('/');
+});
+
+// @desc    RESET PASSWORD
+// @route   PUT /api/v1/auth/resetpassword
+// @access  public
+exports.resetPassword = asyncHandler(async (req, res, next) => {
+  const { password } = req.body;
+  const resetPasswordToken = crypto
+    .createHash('sha256')
+    .update(req.params.token)
+    .digest('hex');
+  const user = await User.findOne({
+    resetPasswordToken,
+    resetPasswordExpire: { $gt: Date.now() },
+  });
+  if (!user) return next(new ErrorResponse('invalid token', 400));
+  user.password = password;
+  user.resetPasswordToken = undefined;
+  user.resetPasswordExpire = undefined;
+  await user.save();
+  sendTokenResponse(user, 200, res);
 });
