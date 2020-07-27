@@ -51,9 +51,9 @@ export const Login = () => {
     <div className='Login'>
       <form noValidate onSubmit={handleFormSubmit}>
         {errorMsg.status ? (
-          <div className='error-div'>
-            <h5> There was a problem</h5>
-            <h6 className={`text-${errorMsg.color}`}>{errorMsg.msg}</h6>
+          <div className={` error-div text-${errorMsg.color}`}>
+            <h6>There was a problem</h6>
+            <h6>{errorMsg.msg}</h6>
           </div>
         ) : null}
 
@@ -78,16 +78,27 @@ export const Login = () => {
             onChange={handleChange}
           />
         </div>
-        <h6 className='forgot-password'>Forgot password</h6>
+        <div className='row-div'>
+          <div className='check-box-group '>
+            <input type='checkbox' />
+            <h6 className=''>Remember me</h6>
+          </div>
+          <h6 className='forgot-password'>Forgot password</h6>
+        </div>
 
         <button variant='primary' type='submit'>
           Submit
         </button>
 
-        <p>
+        <p className='text-muted'>
           By continuing, you agree to the Terms and Conditions of Use and
           Privacy Notice.
         </p>
+        <hr />
+        <div className='part-2'>
+          <p>New user!</p>
+          <p>Create you account</p>
+        </div>
       </form>
     </div>
   )
