@@ -1,9 +1,9 @@
 import React from "react"
 import { BrowserRouter as Router } from "react-router-dom"
 import "./App.scss"
-import { Routing } from "./components/common/Routing"
-import { Header } from "./components/common/Header"
-import { Footer } from "./components/common/Footer"
+import { Routing } from "./components/basic/Routing"
+import { Header } from "./components/basic/Header/Header"
+import { Footer } from "./components/basic/Footer/Footer"
 
 function App() {
   return (
