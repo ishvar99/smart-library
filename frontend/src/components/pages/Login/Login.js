@@ -1,6 +1,6 @@
 import React, { useState } from "react"
-import { Form, Button } from "react-bootstrap"
 import axios from "axios"
+import "./login.scss"
 
 export const Login = () => {
   const [inputvalue, setinputvalue] = useState({
@@ -48,39 +48,47 @@ export const Login = () => {
   }
 
   return (
-    <div className='SignIn'>
-      <Form className='container' onSubmit={handleFormSubmit}>
-        <Form.Group controlId='formBasicEmail'>
-          <Form.Label>Email address</Form.Label>
-          <Form.Control
+    <div className='Login'>
+      <form noValidate onSubmit={handleFormSubmit}>
+        {errorMsg.status ? (
+          <div className='error-div'>
+            <h5> There was a problem</h5>
+            <h6 className={`text-${errorMsg.color}`}>{errorMsg.msg}</h6>
+          </div>
+        ) : null}
+
+        <h3>Login</h3>
+
+        <div className='form-group'>
+          <label>Email address</label>
+          <input
             type='email'
             name='email'
-            placeholder='Enter email'
             value={inputvalue.email}
             onChange={handleChange}
           />
-          <Form.Text className='text-muted'>
-            We'll never share your email with anyone else.
-          </Form.Text>
-        </Form.Group>
+        </div>
 
-        <Form.Group controlId='formBasicPassword'>
-          <Form.Label>Password</Form.Label>
-          <Form.Control
+        <div className='form-group'>
+          <label>Password</label>
+          <input
             type='password'
             name='password'
-            placeholder='Password'
             value={inputvalue.password}
             onChange={handleChange}
           />
-        </Form.Group>
-        <h6 className={`text-center text-${errorMsg.color}`}>
-          {errorMsg.status ? errorMsg.msg : errorMsg.msg}
-        </h6>
-        <Button variant='primary' type='submit'>
+        </div>
+        <h6 className='forgot-password'>Forgot password</h6>
+
+        <button variant='primary' type='submit'>
           Submit
-        </Button>
-      </Form>
+        </button>
+
+        <p>
+          By continuing, you agree to the Terms and Conditions of Use and
+          Privacy Notice.
+        </p>
+      </form>
     </div>
   )
 }
