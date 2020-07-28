@@ -1,7 +1,7 @@
 import React, { useState } from "react"
-import { Form, Button } from "react-bootstrap"
 import axios from "axios"
 import validator from "validator"
+import "./register.scss"
 
 export const Register = () => {
   const [inputvalue, setinputvalue] = useState({
@@ -42,9 +42,9 @@ export const Register = () => {
 
     try {
       if (
-        inputvalue.uname ||
-        inputvalue.age ||
-        inputvalue.email ||
+        inputvalue.uname &&
+        inputvalue.age &&
+        inputvalue.email &&
         inputvalue.password
       ) {
         if (validator.isEmail(inputvalue.email)) {
@@ -83,63 +83,65 @@ export const Register = () => {
 
   return (
     <div className='Register'>
-      <Form
-        className='container'
-        noValidate
-        onSubmit={(e) => handleFormSubmit(e)}
-      >
-        <Form.Group controlId='formBasicname'>
-          <Form.Label>Name</Form.Label>
-          <Form.Control
+      <form noValidate onSubmit={handleFormSubmit}>
+        {errorMsg.status ? (
+          <div className={`error-div text-${errorMsg.color}`}>
+            <h6> There was a problem</h6>
+            <h6>{errorMsg.msg}</h6>
+          </div>
+        ) : null}
+        <h3>Register</h3>
+        <div className='form-group'>
+          <label>Name</label>
+          <input
             type='text'
             name='uname'
-            placeholder='Enter name'
             value={inputvalue.name}
             onChange={handleChange}
           />
-        </Form.Group>
-        <Form.Group controlId='formBasicAge'>
-          <Form.Label>Age</Form.Label>
-          <Form.Control
+        </div>
+        <div className='form-group'>
+          <label>Age</label>
+          <input
             type='number'
             name='age'
-            placeholder='Enter age'
             value={inputvalue.age}
             onChange={handleChange}
           />
-        </Form.Group>
-        <Form.Group controlId='formBasicEmail'>
-          <Form.Label>Email</Form.Label>
-          <Form.Control
+        </div>
+        <div className='form-group'>
+          <label>Email</label>
+          <input
             type='email'
             name='email'
-            placeholder='Enter email'
             value={inputvalue.email}
             onChange={handleChange}
           />
-          <Form.Text className='text-muted'>
-            We'll never share your email with anyone else.
-          </Form.Text>
-        </Form.Group>
+        </div>
 
-        <Form.Group controlId='formBasicPassword'>
-          <Form.Label>Password</Form.Label>
-          <Form.Control
+        <div className='form-group'>
+          <label>Password</label>
+          <input
             type='password'
             name='password'
-            placeholder='Password'
             value={inputvalue.password}
             onChange={handleChange}
           />
-        </Form.Group>
+        </div>
 
-        <h6 className={`text-center text-${errorMsg.color}`}>
-          {errorMsg.status ? errorMsg.msg : errorMsg.msg}
-        </h6>
-        <Button variant='primary' type='submit'>
+        <button variant='primary' type='submit'>
           Submit
-        </Button>
-      </Form>
+        </button>
+        <p className='text-muted'>
+          By continuing, you agree to the Terms and Conditions of Use and
+          Privacy Notice.
+        </p>
+        <hr />
+        <div className='part-2'>
+          <p>Existing user!</p>
+          <p>Login to continue</p>
+        </div>
+      </form>
     </div>
   )
 }
