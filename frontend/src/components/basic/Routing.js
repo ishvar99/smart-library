@@ -7,13 +7,13 @@ import { Register } from "../pages/Register/Register"
 export const Routing = () => {
   return (
     <Switch>
-      <Route exact path='/'>
+      <Route exact path="/">
         <Home />
       </Route>
-      <Route path='/register'>
+      <Route exact path="/register">
         <Register />
       </Route>
-      <Route path='/login'>
+      <Route exact path="/login">
         <Login />
       </Route>
     </Switch>
