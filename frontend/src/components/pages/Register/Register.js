@@ -2,8 +2,8 @@ import React, { useState } from "react"
 import axios from "axios"
 import validator from "validator"
 import "./register.scss"
-
-export const Register = () => {
+import Loading from "../../utils/Loading/Loading.jsx"
+export const Register = (props) => {
   const [inputvalue, setinputvalue] = useState({
     uname: "",
     age: "",
@@ -15,7 +15,7 @@ export const Register = () => {
     color: "",
     msg: "",
   })
-
+  const [loading, setLoading] = useState(false)
   const handleChange = (event) => {
     const { name, value } = event.target
     seterrorMsg({
@@ -38,8 +38,12 @@ export const Register = () => {
 
   const handleFormSubmit = async (event) => {
     event.preventDefault()
-    const uri = "api/v1/auth/register"
-
+    seterrorMsg({
+      status: false,
+      color: "",
+      msg: "",
+    })
+    const uri = "/api/v1/auth/register"
     try {
       if (
         inputvalue.uname &&
@@ -49,8 +53,10 @@ export const Register = () => {
       ) {
         if (validator.isEmail(inputvalue.email)) {
           if (inputvalue.password.length > 5) {
+            setLoading(true)
             const response = await axios.post(uri, formData)
-            console.log(response)
+            setLoading(false)
+            props.history.push("/")
           } else {
             seterrorMsg({
               status: true,
@@ -73,6 +79,7 @@ export const Register = () => {
         })
       }
     } catch (error) {
+      setLoading(false)
       seterrorMsg({
         status: true,
         msg: error.response.data.error,
@@ -82,62 +89,69 @@ export const Register = () => {
   }
 
   return (
-    <div className='Register'>
+    <div className="Register">
       <form noValidate onSubmit={handleFormSubmit}>
         {errorMsg.status ? (
-          <div className={`error-div text-${errorMsg.color}`}>
+          <div
+            className={`error-div text-${errorMsg.color}`}
+            style={{ textAlign: "center" }}
+          >
             <h6> There was a problem</h6>
             <h6>{errorMsg.msg}</h6>
           </div>
         ) : null}
         <h3>Register</h3>
-        <div className='form-group'>
+        <div className="form-group">
           <label>Name</label>
           <input
-            type='text'
-            name='uname'
+            type="text"
+            name="uname"
             value={inputvalue.name}
             onChange={handleChange}
           />
         </div>
-        <div className='form-group'>
+        <div className="form-group">
           <label>Age</label>
           <input
-            type='number'
-            name='age'
+            type="number"
+            name="age"
             value={inputvalue.age}
             onChange={handleChange}
           />
         </div>
-        <div className='form-group'>
+        <div className="form-group">
           <label>Email</label>
           <input
-            type='email'
-            name='email'
+            type="email"
+            name="email"
             value={inputvalue.email}
             onChange={handleChange}
           />
         </div>
 
-        <div className='form-group'>
+        <div className="form-group">
           <label>Password</label>
           <input
-            type='password'
-            name='password'
+            type="password"
+            name="password"
             value={inputvalue.password}
             onChange={handleChange}
           />
         </div>
 
-        <button variant='primary' type='submit'>
-          Submit
+        <button
+          variant="primary"
+          type="submit"
+          style={{ opacity: loading ? "0.7" : "1" }}
+        >
+          {!loading ? "Submit" : <Loading />}
         </button>
-        <p className='text-muted'>
+        <p className="text-muted">
           By continuing, you agree to the Terms and Conditions of Use and
           Privacy Notice.
         </p>
         <hr />
-        <div className='part-2'>
+        <div className="part-2">
           <p>Existing user!</p>
           <p>Login to continue</p>
         </div>
