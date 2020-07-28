@@ -10,7 +10,7 @@ exports.isLoggedin = asyncHandler(async (req, res, next) => {
   }
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET)
-    req.user = await User.findById(decoded.id)
+    req.currentUser = await User.findById(decoded.id)
     next()
   } catch (error) {
     return next(new ErrorResponse("Authentication Failed!", 401))
