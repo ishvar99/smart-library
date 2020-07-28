@@ -4,7 +4,7 @@ $button-color: orange;
 $btn-text-color: white;
 $error-danger: #d9534f;
 
-.Login {
+.Register {
   position: relative;
   display: flex;
   margin: 30px auto;
@@ -40,26 +40,9 @@ $error-danger: #d9534f;
         outline-color: $outline-color;
       }
     }
-    .row-div {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-
-      h6 {
-        font-size: 14px;
-      }
-
-      .check-box-group {
-        display: flex;
-        justify-content: center;
-        font-size: 14px;
-        h6 {
-          margin-left: 5px;
-          font-size: 14px;
-          font-weight: 500;
-        }
-      }
+    .forgot-password {
+      font-size: 14px;
+      float: right;
     }
     button {
       width: 100%;
@@ -89,7 +72,7 @@ $error-danger: #d9534f;
       border: 2px solid $error-danger;
       border-radius: 5px;
       padding: 5px 10px;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
 
       h6 {
         font-size: 14px;
@@ -105,6 +88,7 @@ $error-danger: #d9534f;
         font-size: 14px;
       }
     }
+
     hr {
       margin-top: 10px;
       margin-bottom: 5px;
