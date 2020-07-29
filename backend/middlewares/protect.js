@@ -16,3 +16,17 @@ exports.isLoggedin = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse("Authentication Failed!", 401))
   }
 })
+
+exports.isAuthenticated = (req, res, next) => {
+  // console.log(req.currentUser)
+  // console.log(req.foundUser)
+
+  let checkAuth =
+    req.currentUser && req.foundUser && req.foundUser.id == req.currentUser.id
+
+  // console.log(checkAuth)
+  if (!checkAuth) {
+    return new ErrorResponse("Access Denied!", 403)
+  }
+  next()
+}
