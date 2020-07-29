@@ -4,14 +4,16 @@ import "./App.scss"
 import { Routing } from "./components/basic/Routing"
 import { Header } from "./components/basic/Header/Header"
 import { Footer } from "./components/basic/Footer/Footer"
-
+import AuthState from "./context/Auth/AuthState"
 function App() {
   return (
-    <Router>
-      <Header />
-      <Routing />
-      <Footer />
-    </Router>
+    <AuthState>
+      <Router>
+        <Header />
+        <Routing />
+        <Footer />
+      </Router>
+    </AuthState>
   )
 }
 
