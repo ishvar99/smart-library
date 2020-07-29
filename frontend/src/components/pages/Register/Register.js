@@ -81,7 +81,6 @@ export const Register = (props) => {
     }
   }
   useEffect(() => {
-    console.log(loading)
     setLoading(context.loading)
     if (context.isAuthenticated) {
       props.history.push("/")
