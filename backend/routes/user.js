@@ -3,7 +3,7 @@ const { getUserByID, getUser, updateUser } = require("../controllers/user")
 const { isLoggedin } = require("../middlewares/protect")
 const router = express.Router()
 
-router.param("userID", isLoggedin, getUserByID)
+router.param("userID", getUserByID)
 router.get("/user/:userID", isLoggedin, getUser)
 router.put("/user/:userID", isLoggedin, updateUser)
 
