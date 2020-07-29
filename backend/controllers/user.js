@@ -15,7 +15,7 @@ exports.getUserByID = (req, res, next, id) => {
 }
 
 exports.getUser = (req, res) => {
-  req.userData.password = undefined
+  req.foundUser.password = undefined
   return res.status(200).json(req.foundUser)
 }
 

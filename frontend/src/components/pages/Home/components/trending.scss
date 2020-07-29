@@ -1,0 +1,29 @@
+.Trending {
+  display: flex;
+  flex-direction: column;
+
+  .section-title {
+    margin: 0 20px 10px 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .main-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    width: 100%;
+    overflow: auto;
+
+    .book-wrapper {
+      margin: 0 15px;
+      .book-img {
+        border-radius: 10px;
+      }
+    }
+  }
+  .main-wrapper::-webkit-scrollbar {
+    display: none;
+  }
+}
