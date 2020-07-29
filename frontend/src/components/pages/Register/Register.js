@@ -1,9 +1,11 @@
-import React, { useState } from "react"
-import axios from "axios"
+import React, { useState, useContext, useEffect } from "react"
 import validator from "validator"
 import "./register.scss"
 import Loading from "../../utils/Loading/Loading.jsx"
+import AuthContext from "../../../context/Auth/AuthContext"
 export const Register = (props) => {
+  const context = useContext(AuthContext)
+  const [loading, setLoading] = useState(context.loading)
   const [inputvalue, setinputvalue] = useState({
     uname: "",
     age: "",
@@ -15,7 +17,6 @@ export const Register = (props) => {
     color: "",
     msg: "",
   })
-  const [loading, setLoading] = useState(false)
   const handleChange = (event) => {
     const { name, value } = event.target
     seterrorMsg({
@@ -35,7 +36,39 @@ export const Register = (props) => {
     email: inputvalue.email,
     password: inputvalue.password,
   }
-
+  const checkErrors = () => {
+    if (
+      inputvalue.uname &&
+      inputvalue.age &&
+      inputvalue.email &&
+      inputvalue.password
+    ) {
+      if (validator.isEmail(inputvalue.email)) {
+        if (inputvalue.password.length < 5) {
+          seterrorMsg({
+            status: true,
+            msg: "Password should be atleast 6 characters",
+            color: "danger",
+          })
+        } else {
+          return false
+        }
+      } else {
+        seterrorMsg({
+          status: true,
+          msg: "Please provide a valid email",
+          color: "danger",
+        })
+      }
+    } else {
+      seterrorMsg({
+        status: true,
+        msg: "Please fill in all the details",
+        color: "danger",
+      })
+    }
+    return true
+  }
   const handleFormSubmit = async (event) => {
     event.preventDefault()
     seterrorMsg({
@@ -43,51 +76,25 @@ export const Register = (props) => {
       color: "",
       msg: "",
     })
-    const uri = "/api/v1/auth/register"
-    try {
-      if (
-        inputvalue.uname &&
-        inputvalue.age &&
-        inputvalue.email &&
-        inputvalue.password
-      ) {
-        if (validator.isEmail(inputvalue.email)) {
-          if (inputvalue.password.length > 5) {
-            setLoading(true)
-            const response = await axios.post(uri, formData)
-            setLoading(false)
-            props.history.push("/")
-          } else {
-            seterrorMsg({
-              status: true,
-              msg: "Password should be atleast 6 characters",
-              color: "danger",
-            })
-          }
-        } else {
-          seterrorMsg({
-            status: true,
-            msg: "Please provide a valid email",
-            color: "danger",
-          })
-        }
-      } else {
-        seterrorMsg({
-          status: true,
-          msg: "Please fill in all the details",
-          color: "danger",
-        })
-      }
-    } catch (error) {
-      setLoading(false)
+    if (!checkErrors()) {
+      context.registerUser(formData)
+    }
+  }
+  useEffect(() => {
+    console.log(loading)
+    setLoading(context.loading)
+    if (context.isAuthenticated) {
+      props.history.push("/")
+    }
+    if (context.error) {
       seterrorMsg({
-        status: true,
-        msg: error.response.data.error,
+        status: "true",
+        msg: context.error,
         color: "danger",
       })
     }
-  }
-
+    // eslint-disable-next-line
+  }, [context.error, context.isAuthenticated, context.loading, props.history])
   return (
     <div className="Register">
       <form noValidate onSubmit={handleFormSubmit}>
@@ -144,7 +151,7 @@ export const Register = (props) => {
           type="submit"
           style={{ opacity: loading ? "0.7" : "1" }}
         >
-          {!loading ? "Submit" : <Loading />}
+          {loading ? <Loading /> : "Submit"}
         </button>
         <p className="text-muted">
           By continuing, you agree to the Terms and Conditions of Use and
