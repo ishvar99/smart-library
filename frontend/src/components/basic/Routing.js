@@ -3,19 +3,15 @@ import { Switch, Route } from "react-router-dom"
 import { Home } from "../pages/Home/Home"
 import { Login } from "../pages/Login/Login"
 import { Register } from "../pages/Register/Register"
-
+import AuthState from "../../context/Auth/AuthState"
 export const Routing = () => {
   return (
-    <Switch>
-      <Route exact path="/">
-        <Home />
-      </Route>
-      <Route exact path="/register">
-        <Register />
-      </Route>
-      <Route exact path="/login">
-        <Login />
-      </Route>
-    </Switch>
+    <AuthState>
+      <Switch>
+        <Route exact path="/" component={Home}></Route>
+        <Route exact path="/register" component={Register}></Route>
+        <Route exact path="/login" component={Login}></Route>
+      </Switch>
+    </AuthState>
   )
 }
