@@ -49,7 +49,15 @@ export const Login = (props) => {
         color: "danger",
       })
     }
-  }, [context.isAuthenticated, context.login, context.loading, props.history])
+  }, [context.isAuthenticated, context.error, context.loading, props.history])
+  useEffect(() => {
+    // Clear all the errors,when page is loaded
+    seterrorMsg({
+      status: false,
+      color: "",
+      msg: "",
+    })
+  }, [])
   return (
     <div className="Login">
       <form noValidate onSubmit={handleFormSubmit}>
