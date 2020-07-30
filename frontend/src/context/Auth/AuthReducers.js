@@ -23,6 +23,7 @@ export default (state, action) => {
       return {
         ...state,
         loading: action.payload,
+        error: null,
       }
     }
     case REGISTER_FAIL:
@@ -37,9 +38,10 @@ export default (state, action) => {
       }
 
     case USER_LOADED: {
+      console.log(action.payload)
       return {
         ...state,
-        user: action.payload,
+        user: action.payload.data,
         loading: false,
         isAuthenticated: true,
         error: null,
