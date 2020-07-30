@@ -5,7 +5,7 @@ import sampledata from "./sampleData"
 import "./home.scss"
 export const Home = () => {
   return (
-    <div className='Home'>
+    <div className='Home container my-3'>
       <Slider data={sampledata} />
       <div className='section-1'>
         <div className='trending-section'>
