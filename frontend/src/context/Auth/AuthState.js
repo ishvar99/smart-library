@@ -40,6 +40,7 @@ const AuthState = (props) => {
           },
         }
       )
+      console.log(response)
       dispatch({ type: REGISTER_SUCCESS, payload: response.data })
       loadUser()
     } catch (err) {
@@ -54,7 +55,7 @@ const AuthState = (props) => {
     try {
       dispatch({ type: LOADING, payload: true })
       const response = await axios.post(
-        "/api/auth/login",
+        "/api/v1/auth/login",
         JSON.stringify(formData),
         {
           headers: {
