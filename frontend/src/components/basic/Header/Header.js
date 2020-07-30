@@ -39,11 +39,18 @@ export const Header = () => {
                 </li>
               </Fragment>
             ) : (
+              <Fragment>
               <li className="nav-item">
                 <Link to="/login" className="nav-link">
                   Hello, {user ? user.name.split(" ")[0] : ""}
                 </Link>
               </li>
+              <li className='nav-item'>
+              <Link to='/profile' className='nav-link'>
+                Profile
+              </Link>
+            </li>
+            </Fragment>
             )}
           </Nav>
         </Navbar.Collapse>
