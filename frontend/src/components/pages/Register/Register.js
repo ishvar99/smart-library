@@ -94,6 +94,14 @@ export const Register = (props) => {
     }
     // eslint-disable-next-line
   }, [context.error, context.isAuthenticated, context.loading, props.history])
+  useEffect(() => {
+    // Clear all the errors,when page is loaded
+    seterrorMsg({
+      status: false,
+      color: "",
+      msg: "",
+    })
+  }, [])
   return (
     <div className="Register">
       <form noValidate onSubmit={handleFormSubmit}>
