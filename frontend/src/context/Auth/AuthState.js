@@ -22,6 +22,7 @@ const AuthState = (props) => {
   const [state, dispatch] = useReducer(AuthReducer, intialState)
   const loadUser = async () => {
     try {
+      dispatch({ type: LOADING, payload: true })
       const response = await axios.get("/api/v1/auth/me")
       dispatch({ type: USER_LOADED, payload: response.data })
     } catch (error) {
@@ -40,7 +41,6 @@ const AuthState = (props) => {
           },
         }
       )
-      console.log(response)
       dispatch({ type: REGISTER_SUCCESS, payload: response.data })
       loadUser()
     } catch (err) {
