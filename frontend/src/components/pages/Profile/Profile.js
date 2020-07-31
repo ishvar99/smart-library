@@ -6,8 +6,12 @@ import { ProfileContainer } from "./components/ProfileContainer"
 import AuthContext from "../../../context/Auth/AuthContext"
 export const Profile = () => {
   const context = useContext(AuthContext)
+  const { user, loading, loadUser } = context
   useEffect(() => {
-    context.loadUser()
+    async function getUser() {
+      await loadUser()
+    }
+    getUser()
   }, [])
   return (
     <div className="Profile container my-3">
