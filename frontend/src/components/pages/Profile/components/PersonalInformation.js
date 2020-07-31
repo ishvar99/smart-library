@@ -5,11 +5,14 @@ import AuthContext from "../../../../context/Auth/AuthContext"
 export const PersonalInformation = () => {
   const context = useContext(AuthContext)
   const { user } = context
+  const [edit, setEdit] = useState(false)
   const [validated, setValidated] = useState(false)
-  const [disabledStatus, setDisabledStatus] = useState(true)
   const [name, setName] = useState("")
   const [age, setAge] = useState("")
   const [email, setEmail] = useState("")
+  const handleEdit = (e) => {
+    setEdit(!edit)
+  }
   useEffect(() => {
     if (user) {
       setName(user.name)
@@ -18,42 +21,44 @@ export const PersonalInformation = () => {
     }
   }, [user])
   const handleSubmit = async (event) => {
-    setDisabledStatus(true)
+    event.preventDefault()
+
     const form = event.currentTarget
+    console.log(form.checkValidity())
     if (form.checkValidity() === false) {
       event.preventDefault()
       event.stopPropagation()
     }
     setValidated(true)
-    try {
-      const response = await axios.put(
-        `/api/v1/user/${user._id}`,
-        JSON.stringify({ name, age }),
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      )
-    } catch (e) {
-      console.log(e)
+    if (form.checkValidity()) {
+      try {
+        const response = await axios.put(
+          `/api/v1/user/${user._id}`,
+          JSON.stringify({ name, age }),
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        )
+        setEdit(!edit)
+      } catch (e) {
+        console.log(e)
+      }
     }
   }
-  const enableEdit = () => {
-    setDisabledStatus(false)
-  }
   return (
-    <div className="tabContent" id="PersonalInformation">
-      <Card className="p-3">
+    <div className='tabContent' id='PersonalInformation'>
+      <Card className='p-3'>
         <Card.Title>
           Personal Information
-          <span
-            className="edit-text text-primary float-right"
-            onClick={enableEdit}
+          <Button
+            type='button'
+            className=' btn btn-sm btn-light bg-white text-primary float-right'
+            onClick={handleEdit}
           >
-            {" "}
-            Edit
-          </span>
+            {!edit ? <span>Edit</span> : <span> Cancel</span>}
+          </Button>
         </Card.Title>
         <Card.Body>
           <Form noValidate validated={validated} onSubmit={handleSubmit}>
@@ -63,13 +68,13 @@ export const PersonalInformation = () => {
                   <Form.Label>Name</Form.Label>
                   <Form.Control
                     required
-                    type="text"
-                    id="name"
+                    type='text'
+                    id='name'
                     value={name}
-                    disabled={disabledStatus}
+                    disabled={!edit}
                     onChange={(e) => setName(e.target.value)}
                   />
-                  <Form.Control.Feedback type="invalid">
+                  <Form.Control.Feedback type='invalid'>
                     Please enter your name
                   </Form.Control.Feedback>
                 </Form.Group>
@@ -77,13 +82,13 @@ export const PersonalInformation = () => {
                   <Form.Label>Age</Form.Label>
                   <Form.Control
                     required
-                    type="number"
+                    type='number'
                     value={age}
-                    id="age"
+                    id='age'
                     onChange={(e) => setAge(e.target.value)}
-                    disabled={disabledStatus}
+                    disabled={!edit}
                   />
-                  <Form.Control.Feedback type="invalid">
+                  <Form.Control.Feedback type='invalid'>
                     Age is required
                   </Form.Control.Feedback>
                 </Form.Group>
@@ -92,7 +97,7 @@ export const PersonalInformation = () => {
 
             <Form.Group>
               <Form.Label>Bio</Form.Label>
-              <Form.Control as="textarea" rows="3" disabled={disabledStatus} />
+              <Form.Control as='textarea' rows='3' disabled={!edit} />
             </Form.Group>
 
             <Form.Row>
@@ -100,19 +105,19 @@ export const PersonalInformation = () => {
                 <Form.Label>Email address</Form.Label>
                 <Form.Control
                   required
-                  disabled={disabledStatus}
-                  type="email"
+                  disabled={!edit}
+                  type='email'
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  id="email"
+                  id='email'
                 />
-                <Form.Control.Feedback type="invalid">
+                <Form.Control.Feedback type='invalid'>
                   Enter a valid email address
                 </Form.Control.Feedback>
               </Form.Group>
             </Form.Row>
 
-            <Button variant="primary" type="submit">
+            <Button variant='primary' type='submit' disabled={!edit}>
               Submit
             </Button>
           </Form>
