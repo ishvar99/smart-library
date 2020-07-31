@@ -1,22 +1,51 @@
-import React, { useState } from "react"
+import React, { useState, useContext, useEffect } from "react"
 import { Card, Form, Button, Col } from "react-bootstrap"
-
+import axios from "axios"
+import AuthContext from "../../../../context/Auth/AuthContext"
 export const PersonalInformation = () => {
+  const context = useContext(AuthContext)
+  const { user } = context
   const [edit, setEdit] = useState(false)
   const [validated, setValidated] = useState(false)
+  const [name, setName] = useState("")
+  const [age, setAge] = useState("")
+  const [email, setEmail] = useState("")
+  const handleEdit = (e) => {
+    setEdit(!edit)
+  }
+  useEffect(() => {
+    if (user) {
+      setName(user.name)
+      setAge(user.age)
+      setEmail(user.email)
+    }
+  }, [user])
+  const handleSubmit = async (event) => {
+    event.preventDefault()
 
-  const handleSubmit = (event) => {
     const form = event.currentTarget
+    console.log(form.checkValidity())
     if (form.checkValidity() === false) {
       event.preventDefault()
       event.stopPropagation()
     }
-
     setValidated(true)
-  }
-
-  const handleEdit = (e) => {
-    setEdit(!edit)
+    if (form.checkValidity()) {
+      try {
+        const response = await axios.put(
+          `/api/v1/user/${user._id}`,
+          JSON.stringify({ name, age }),
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        )
+        setEdit(!edit)
+      } catch (e) {
+        console.log(e)
+      }
+    }
   }
   return (
     <div className='tabContent' id='PersonalInformation'>
@@ -37,14 +66,28 @@ export const PersonalInformation = () => {
               <Form.Row>
                 <Form.Group as={Col} md={5}>
                   <Form.Label>Name</Form.Label>
-                  <Form.Control required type='text' disabled={!edit} />
+                  <Form.Control
+                    required
+                    type='text'
+                    id='name'
+                    value={name}
+                    disabled={!edit}
+                    onChange={(e) => setName(e.target.value)}
+                  />
                   <Form.Control.Feedback type='invalid'>
                     Please enter your name
                   </Form.Control.Feedback>
                 </Form.Group>
                 <Form.Group as={Col} md={2}>
                   <Form.Label>Age</Form.Label>
-                  <Form.Control required type='number' disabled={!edit} />
+                  <Form.Control
+                    required
+                    type='number'
+                    value={age}
+                    id='age'
+                    onChange={(e) => setAge(e.target.value)}
+                    disabled={!edit}
+                  />
                   <Form.Control.Feedback type='invalid'>
                     Age is required
                   </Form.Control.Feedback>
@@ -60,14 +103,21 @@ export const PersonalInformation = () => {
             <Form.Row>
               <Form.Group as={Col}>
                 <Form.Label>Email address</Form.Label>
-                <Form.Control required disabled={!edit} type='email' />
+                <Form.Control
+                  required
+                  disabled={!edit}
+                  type='email'
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  id='email'
+                />
                 <Form.Control.Feedback type='invalid'>
                   Enter a valid email address
                 </Form.Control.Feedback>
               </Form.Group>
             </Form.Row>
 
-            <Button disabled={!edit} variant='primary' type='submit'>
+            <Button variant='primary' type='submit' disabled={!edit}>
               Submit
             </Button>
           </Form>
