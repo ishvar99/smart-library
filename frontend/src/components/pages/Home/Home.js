@@ -20,8 +20,8 @@ export const Home = () => {
       {!loading ? (
         <div className={"Home container my-3"}>
           <Slider data={sampledata} />
-          <div className="section-1">
-            <div className="trending-section">
+          <div className='section-1'>
+            <div className='trending-section'>
               <Trending data={sampledata} />
             </div>
           </div>
