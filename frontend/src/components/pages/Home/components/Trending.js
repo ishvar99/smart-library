@@ -12,13 +12,7 @@ export const Trending = ({ data }) => {
         {data.map((item, index) => {
           return (
             <div key={index} className='book-wrapper'>
-              <img
-                className='book-img'
-                src={item.image}
-                alt='book-cover'
-                height='200'
-                width='150'
-              />
+              <img className='book-img' src={item.image} alt='book-cover' />
             </div>
           )
         })}
