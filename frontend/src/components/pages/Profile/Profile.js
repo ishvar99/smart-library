@@ -6,7 +6,7 @@ import { ProfileContainer } from "./components/ProfileContainer"
 import AuthContext from "../../../context/Auth/AuthContext"
 export const Profile = () => {
   const context = useContext(AuthContext)
-  const { user, loading, loadUser } = context
+  const { loadUser } = context
   useEffect(() => {
     async function getUser() {
       await loadUser()
@@ -14,13 +14,13 @@ export const Profile = () => {
     getUser()
   }, [])
   return (
-    <div className="Profile container my-3">
-      <div className="row">
-        <div className="col-lg-3">
+    <div className='Profile container my-3'>
+      <div className='row'>
+        <div className='col-lg-3'>
           <Hello />
           <ProfileSidebar />
         </div>
-        <div className="col-lg-9">
+        <div className='col-lg-9'>
           <ProfileContainer />
         </div>
       </div>
