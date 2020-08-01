@@ -1,0 +1,38 @@
+.Backdrop {
+  .backdrop-carousel {
+    border-radius: 25px;
+    margin-bottom: 10px;
+    background: linear-gradient(270deg, white, silver);
+    width: 100%;
+    height: 300px;
+    position: relative;
+    background-size: 200% 200%;
+    animation: pulse 1s ease-in-out infinite;
+  }
+
+  .row-wrapper {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+
+    .backdrop-book-img {
+      border-radius: 10px;
+      height: 200px;
+      width: 150px;
+      background: linear-gradient(270deg, white, silver);
+      position: relative;
+      background-size: 200% 200%;
+      animation: pulse 1s ease-in-out infinite;
+    }
+  }
+}
+
+@keyframes pulse {
+  0% {
+    background-position: 0 50%;
+  }
+  100% {
+    background-position: 100% 0;
+  }
+}

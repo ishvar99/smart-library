@@ -1,10 +1,14 @@
 import React from "react"
+import "./backdrop.scss"
 
-export const Backdrop = () => {
+export const Backdrop = ({ data }) => {
   return (
-    <div class="d-flex justify-content-center align-items-center">
-      <div class="spinner-border" role="status">
-        <span class="sr-only">Loading...</span>
+    <div class='Backdrop container my-3'>
+      <div class='backdrop-carousel'></div>
+      <div class='row-wrapper'>
+        {[...Array(6)].map((i) => {
+          return <div key={i} className='backdrop-book-img '></div>
+        })}
       </div>
     </div>
   )
