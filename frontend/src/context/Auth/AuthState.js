@@ -7,6 +7,7 @@ import {
   LOGIN_FAIL,
   LOADING,
   LOGOUT,
+  AUTH_ERROR,
 } from "../types"
 import AuthReducer from "./AuthReducers"
 import AuthContext from "./AuthContext"
@@ -26,7 +27,7 @@ const AuthState = (props) => {
       const response = await axios.get("/api/v1/auth/me")
       dispatch({ type: USER_LOADED, payload: response.data })
     } catch (error) {
-      console.log(error)
+      dispatch({ type: AUTH_ERROR, payload: error.response.data.err })
     }
   }
   const registerUser = async (formData) => {

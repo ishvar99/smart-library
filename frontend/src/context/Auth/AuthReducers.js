@@ -6,6 +6,7 @@ import {
   LOGIN_FAIL,
   LOADING,
   LOGOUT,
+  AUTH_ERROR,
 } from "../types"
 
 export default (state, action) => {
@@ -26,9 +27,9 @@ export default (state, action) => {
         error: null,
       }
     }
+    case AUTH_ERROR:
     case REGISTER_FAIL:
     case LOGIN_FAIL:
-      console.log(action.payload)
       return {
         ...state,
         isAuthenticated: false,
