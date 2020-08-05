@@ -32,9 +32,9 @@ exports.updateUser = (req, res) => {
     { useFindAndModify: false, new: true },
     (err, user) => {
       if (err || !user) {
-        return next(
-          new ErrorResponse("An error occured,  try again later", 400)
-        )
+        return res.status(400).json({
+          error: "An error occured,  try again later",
+        })
       }
       user.password = undefined
       return res.json(user)

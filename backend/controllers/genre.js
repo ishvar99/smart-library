@@ -17,7 +17,7 @@ exports.createGenre = (req, res) => {
   let newGenre = new Genre(req.body)
   newGenre.save((err, genre) => {
     if (err) {
-      return new ErrorResponse("Error saving into the database!", 400)
+      return res.status(400).json({ error: "Error saving into the database!" })
     }
     res.json(genre)
   })
