@@ -1,6 +1,8 @@
 const User = require("../models/user")
 const ErrorResponse = require("../utils/errorResponse")
 
+// middle to get req.foundUser
+
 exports.getUserByID = (req, res, next, id) => {
   User.findById(id).exec((err, user) => {
     if (err) {
@@ -14,10 +16,14 @@ exports.getUserByID = (req, res, next, id) => {
   })
 }
 
+// get route for getUser
+
 exports.getUser = (req, res) => {
   req.foundUser.password = undefined
   return res.status(200).json(req.foundUser)
 }
+
+// put route for update user details
 
 exports.updateUser = (req, res) => {
   User.findByIdAndUpdate(

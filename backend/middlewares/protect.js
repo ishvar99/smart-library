@@ -6,16 +6,18 @@ const jwt = require("jsonwebtoken")
 exports.isLoggedin = asyncHandler(async (req, res, next) => {
   let token = req.cookies["token"]
   if (!token) {
-    return next(new ErrorResponse("Authentication Failed!", 401))
+    return next(new ErrorResponse("Login Failed!", 401))
   }
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET)
     req.currentUser = await User.findById(decoded.id)
     next()
   } catch (error) {
-    return next(new ErrorResponse("Authentication Failed!", 401))
+    return next(new ErrorResponse("Login Failed!", 401))
   }
 })
+
+// middleware - is user Authenticated to edit details
 
 exports.isAuthenticated = (req, res, next) => {
   // console.log(req.currentUser)
@@ -26,7 +28,15 @@ exports.isAuthenticated = (req, res, next) => {
 
   // console.log(checkAuth)
   if (!checkAuth) {
-    return new ErrorResponse("Access Denied!", 403)
+    return new ErrorResponse("Authentication failed", 403)
+  }
+  next()
+}
+
+// middleware for isAdmin
+exports.isAdmin = (req, res, next) => {
+  if (req.foundUser.role === 0 || req.foundUser.role === 1) {
+    return new ErrorResponse("Access Denied! No admin creds found")
   }
   next()
 }
