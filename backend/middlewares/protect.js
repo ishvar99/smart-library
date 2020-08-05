@@ -36,7 +36,7 @@ exports.isAuthenticated = (req, res, next) => {
 // middleware for isAdmin
 exports.isAdmin = (req, res, next) => {
   if (req.foundUser.role === 0 || req.foundUser.role === 1) {
-    return new ErrorResponse("Access Denied! No admin creds found")
+    return new ErrorResponse("Access Denied! No admin creds found", 403)
   }
   next()
 }
