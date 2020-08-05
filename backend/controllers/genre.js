@@ -1,33 +1,75 @@
 const Genre = require("../models/genre")
-const ErrorResponse = require("../utils/errorResponse")
 
 // middleware to access req.genre
 
 exports.getGenreByID = (req, res, next, id) => {
   Genre.findById(id).exec((err, genre) => {
     if (err) {
-      return new ErrorResponse("An error occured! - Genre not found", 400)
+      return res.status(400).json({
+        error: "An error occured! - Genre not found",
+      })
     }
-    res.genre = genre
+    req.genre = genre
     next()
   })
+}
+
+exports.getGenre = (req, res) => {
+  return res.json(req.genre)
 }
 
 exports.createGenre = (req, res) => {
   let newGenre = new Genre(req.body)
   newGenre.save((err, genre) => {
     if (err) {
-      return res.status(400).json({ error: "Error saving into the database!" })
+      return res.status(400).json({
+        error: "Error saving into the database!",
+      })
     }
-    res.json(genre)
+    return res.json(genre)
   })
+}
+
+exports.updateGenre = (req, res) => {
+  Genre.findOneAndUpdate(
+    { _id: req.genre._id },
+    { $set: req.body },
+    { new: true, useFindAndModify: false },
+    (err, updatedGenre) => {
+      if (err) {
+        return res.status(400).json({
+          error: "Error! updating genre",
+        })
+      }
+      return res.json(updatedGenre)
+    }
+  )
 }
 
 exports.getAllGenres = (req, res) => {
   Genre.find().exec((err, genres) => {
     if (err) {
-      return new ErrorResponse("Error occured", 400)
+      return res.status(400).json({
+        error: "Error occured",
+      })
     }
-    res.json(genres)
+    return res.json(genres)
+  })
+}
+
+exports.deleteGenre = (req, res) => {
+  const genre = req.genre
+  genre.remove((err, deletedGenre) => {
+    if (err) {
+      return res.status(400).json({
+        error: "Error occured while deleting",
+      })
+    }
+    if (!deletedGenre) {
+      return res.status(400).json({
+        error: "Not found in db",
+      })
+    }
+    return res.json(`Deleted successfully : ${deletedGenre}`)
   })
 }

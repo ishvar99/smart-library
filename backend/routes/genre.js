@@ -4,6 +4,9 @@ const {
   getGenreByID,
   createGenre,
   getAllGenres,
+  updateGenre,
+  deleteGenre,
+  getGenre,
 } = require("../controllers/genre")
 const { route } = require("./auth")
 const {
@@ -11,6 +14,7 @@ const {
   isAuthenticated,
   isAdmin,
 } = require("../middlewares/protect")
+
 const router = express.Router()
 
 // param
@@ -26,7 +30,28 @@ router.post(
   createGenre
 )
 
+// get genre
+router.get("/genre/:genreID", getGenre)
+
 // get all genres
-router.get("/genre/all", getAllGenres)
+router.get("/genres", getAllGenres)
+
+//update genre name
+router.put(
+  "/genre/:genreID/update/:userID",
+  isLoggedin,
+  isAuthenticated,
+  isAdmin,
+  updateGenre
+)
+
+//delete genre
+router.delete(
+  "/genre/:genreID/delete/:userID",
+  isLoggedin,
+  isAuthenticated,
+  isAdmin,
+  deleteGenre
+)
 
 module.exports = router
