@@ -28,15 +28,21 @@ exports.isAuthenticated = (req, res, next) => {
 
   // console.log(checkAuth)
   if (!checkAuth) {
-    return new ErrorResponse("Authentication failed", 403)
+    return res.status(403).json({
+      error: "Authentication failed",
+    })
   }
   next()
 }
 
 // middleware for isAdmin
 exports.isAdmin = (req, res, next) => {
+  console.log(req.foundUser.role)
+
   if (req.foundUser.role === 0 || req.foundUser.role === 1) {
-    return new ErrorResponse("Access Denied! No admin creds found", 403)
+    return res.status(403).json({
+      error: "Access Denied! No admin creds found",
+    })
   }
   next()
 }
