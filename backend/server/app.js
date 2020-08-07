@@ -9,6 +9,7 @@ const errorHandler = require("../middlewares/error")
 const authRoutes = require("../routes/auth")
 const userRoutes = require("../routes/user")
 const genreRoutes = require("../routes/genre")
+const bookRoutes = require("../routes/book")
 if (process.env.NODE_ENV == "development") {
   app.use(morgan("dev"))
 }
@@ -19,6 +20,7 @@ app.use(cookieParser())
 app.use("/api/v1/auth", authRoutes)
 app.use("/api/v1", userRoutes)
 app.use("/api/v1", genreRoutes)
+app.use("/api/v1", bookRoutes)
 
 app.use(errorHandler)
 const server = app.listen(PORT, () => {
