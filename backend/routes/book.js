@@ -7,6 +7,7 @@ const {
   createBook,
   updateBook,
   deleteBook,
+  getBookCover,
 } = require("../controllers/book")
 const {
   isLoggedin,
@@ -22,6 +23,7 @@ router.param("bookID", getBookByID)
 
 //routes
 router.get("/book/:bookID", getBook)
+router.get("/book/cover/:bookID", getBookCover)
 
 router.post(
   "/book/create/:userID",
