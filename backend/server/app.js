@@ -10,6 +10,7 @@ const authRoutes = require("../routes/auth")
 const userRoutes = require("../routes/user")
 const genreRoutes = require("../routes/genre")
 const bookRoutes = require("../routes/book")
+const authorRoutes = require("../routes/author")
 if (process.env.NODE_ENV == "development") {
   app.use(morgan("dev"))
 }
@@ -21,6 +22,7 @@ app.use("/api/v1/auth", authRoutes)
 app.use("/api/v1", userRoutes)
 app.use("/api/v1", genreRoutes)
 app.use("/api/v1", bookRoutes)
+app.use("/api/v1", authorRoutes)
 
 app.use(errorHandler)
 const server = app.listen(PORT, () => {

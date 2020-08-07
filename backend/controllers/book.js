@@ -59,7 +59,7 @@ exports.createBook = (req, res) => {
     let newBook = new Book(fields)
 
     if (file.bookCover) {
-      if (file.pimage > 2 * 1024 * 1024) {
+      if (file.bookCover > 2 * 1024 * 1024) {
         return res.status(400).json({
           errormsg: "File size is too big",
         })

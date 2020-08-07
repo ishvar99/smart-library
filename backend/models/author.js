@@ -16,7 +16,7 @@ const authorSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  nickname: {
+  nickName: {
     type: String,
     trim: true,
   },
@@ -32,6 +32,10 @@ const authorSchema = new mongoose.Schema({
       ref: "Book",
     },
   ],
+  authorPicture: {
+    data: Buffer,
+    contentType: String,
+  },
 })
 
 module.exports = mongoose.model("Author", authorSchema)
