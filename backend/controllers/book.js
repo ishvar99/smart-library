@@ -27,6 +27,15 @@ exports.getBook = (req, res) => {
   return res.json(req.book)
 }
 
+// get book cover - middleware
+exports.getBookCover = (req, res, next) => {
+  if (req.book.bookCover.data) {
+    res.set("Content-Type", req.book.bookCover.contentType)
+    return res.send(req.book.bookCover.data)
+  }
+  next()
+}
+
 // create book
 exports.createBook = (req, res) => {
   let createForm = new formidable.IncomingForm()
