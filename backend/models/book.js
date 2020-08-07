@@ -13,13 +13,26 @@ const bookSchema = new mongoose.Schema({
     max: 2000,
     required: true,
   },
+  bookCover: {
+    data: Buffer,
+    contentType: String,
+  },
+  bookCoverBg: {
+    data: Buffer,
+    contentType: String,
+  },
   genre: [
     {
       type: ObjectId,
       ref: "Genre",
     },
   ],
-
+  author: [
+    {
+      type: ObjectId,
+      ref: "Author",
+    },
+  ],
   rating: [
     {
       value: {
