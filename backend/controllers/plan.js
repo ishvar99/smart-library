@@ -74,11 +74,9 @@ exports.deletePlan = (req, res) => {
         error: "Error occured while deleting",
       })
     }
-    if (!deletedPlan) {
-      return res.status(400).json({
-        error: "Not found in db",
-      })
-    }
-    return res.json(`Deleted successfully : ${deletedPlan}`)
+    res.json({
+      message: "Deleted successfully",
+      deletedplan,
+    })
   })
 }

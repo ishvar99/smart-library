@@ -65,11 +65,11 @@ exports.deleteGenre = (req, res) => {
         error: "Error occured while deleting",
       })
     }
-    if (!deletedGenre) {
-      return res.status(400).json({
-        error: "Not found in db",
-      })
-    }
-    return res.json(`Deleted successfully : ${deletedGenre}`)
+    res.json(
+      {
+        message: "Deleted successfully",
+      },
+      deletedGenre
+    )
   })
 }
