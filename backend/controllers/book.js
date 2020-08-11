@@ -50,17 +50,18 @@ exports.getBookCoverBg = (req, res, next) => {
 // create book
 exports.createBook = async (req, res, next) => {
   const { title, description, genre } = req.body
-  newGenre = new Genre({ name: genre })
-  await newGenre.save()
+  console.log(genre)
   const url = req.protocol + "://" + req.get("host")
+  const response = await Genre.findOne({ name: genre })
+  console.log(response)
   if (!title || !description) {
     return res.status(400).json({
       errormsg: "Please provide all the relevant details",
     })
   }
   let newBook = new Book({ title, description })
-  newBook.genre.push(newGenre._id)
-  newBook.bookCover = url + "/public/uploads/" + req.file.filename
+  newBook.genre.push(response._id)
+  newBook.bookCover = url + "/resources/" + req.file.filename
   newBook.save((err, book) => {
     if (err) {
       return res.status(400).json({

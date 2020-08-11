@@ -2,12 +2,13 @@ const express = require("express")
 const { getUserByID } = require("../controllers/user")
 const { getGenreByID } = require("../controllers/genre")
 const multer = require("multer")
+const path = require("path")
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "backend/public/uploads/")
   },
   filename: function (req, file, cb) {
-    cb(null, file.fieldname + "-" + Date.now())
+    cb(null, Date.now() + path.extname(file.originalname))
   },
 })
 

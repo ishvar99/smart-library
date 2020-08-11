@@ -9,6 +9,15 @@ export const AddBook = () => {
   const [genre, setGenre] = useState()
   const [bookCover, setBookCover] = useState("")
   const [userId, setUserId] = useState()
+  const [genresData, setGenresData] = useState([])
+  useEffect(() => {
+    async function loadGenres() {
+      const response = await axios.get("/api/v1/genres")
+      setGenresData(response.data)
+      setGenre(response.data[0].name)
+    }
+    loadGenres()
+  }, [])
   useEffect(() => {
     if (user) {
       console.log(user._id)
@@ -60,11 +69,11 @@ export const AddBook = () => {
             class="form-control"
             onChange={(e) => setGenre(e.target.value)}
           >
-            <option>Mystery</option>
-            <option>Horror</option>
-            <option>Sci-fi</option>
-            <option>Fiction</option>
-            <option>Fantasy</option>
+            {genresData.map((e, i) => (
+              <option key={i} value={e.name}>
+                {e.name}
+              </option>
+            ))}
           </select>
         </div>
         <div class="form-group row">
