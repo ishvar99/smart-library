@@ -21,7 +21,7 @@ export const PersonalInformation = () => {
     }
   }, [user])
   const handleSubmit = async (event) => {
-    event.preventDefault()
+    // event.preventDefault()
     const form = event.currentTarget
     console.log(form.checkValidity())
     if (form.checkValidity() === false) {

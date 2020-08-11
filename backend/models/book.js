@@ -14,12 +14,10 @@ const bookSchema = new mongoose.Schema({
     required: true,
   },
   bookCover: {
-    data: Buffer,
-    contentType: String,
+    type: String,
   },
   bookCoverBg: {
-    data: Buffer,
-    contentType: String,
+    type: String,
   },
   genre: [
     {
