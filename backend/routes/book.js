@@ -21,6 +21,7 @@ const {
   deleteBook,
   getBookCover,
   getBookCoverBg,
+  getBooksByGenre,
 } = require("../controllers/book")
 const {
   isLoggedin,
@@ -36,6 +37,7 @@ router.param("bookID", getBookByID)
 
 //routes
 router.get("/book/:bookID", getBook)
+router.get("/books/:type", getBooksByGenre)
 router.get("/book/cover/:bookID", getBookCover)
 router.get("/book/coverbg/:bookID", getBookCoverBg)
 
