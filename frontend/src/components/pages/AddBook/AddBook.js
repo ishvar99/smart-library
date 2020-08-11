@@ -1,19 +1,23 @@
 import React, { useContext, useState, useEffect } from "react"
 import axios from "axios"
 import AuthContext from "../../../context/Auth/AuthContext"
+import Loading from "../../utils/Loading/Loading.jsx"
+import { useHistory } from "react-router-dom"
 export const AddBook = () => {
   const context = useContext(AuthContext)
   const { user } = context
+  const history = useHistory()
+  const [loading, setLoading] = useState(false)
   const [title, setTitle] = useState("")
   const [description, setDescription] = useState("")
   const [genre, setGenre] = useState()
   const [bookCover, setBookCover] = useState("")
   const [userId, setUserId] = useState()
-  const [genresData, setGenresData] = useState([])
+  const [genresList, setGenresList] = useState([])
   useEffect(() => {
     async function loadGenres() {
       const response = await axios.get("/api/v1/genres")
-      setGenresData(response.data)
+      setGenresList(response.data)
       setGenre(response.data[0].name)
     }
     loadGenres()
@@ -33,13 +37,16 @@ export const AddBook = () => {
     fd.append("bookcover", bookCover)
 
     try {
-      const response = await axios.post(`/api/v1/book/create/${userId}`, fd, {
+      setLoading(true)
+      await axios.post(`/api/v1/book/create/${userId}`, fd, {
         headers: {
           "content-type": "multipart/form-data",
         },
       })
-      console.log(response)
+      setLoading(false)
+      history.push("/")
     } catch (e) {
+      setLoading(false)
       console.log(e)
     }
   }
@@ -69,7 +76,7 @@ export const AddBook = () => {
             class="form-control"
             onChange={(e) => setGenre(e.target.value)}
           >
-            {genresData.map((e, i) => (
+            {genresList.map((e, i) => (
               <option key={i} value={e.name}>
                 {e.name}
               </option>
@@ -90,8 +97,12 @@ export const AddBook = () => {
           </div>
         </div>
 
-        <button type="submit" className="btn btn-primary">
-          Submit
+        <button
+          type="submit"
+          className="btn btn-primary"
+          style={{ opacity: loading ? "0.7" : "1" }}
+        >
+          {loading ? <Loading /> : "Submit"}
         </button>
       </form>
     </div>

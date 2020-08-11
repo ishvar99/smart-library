@@ -1,6 +1,6 @@
 const Book = require("../models/book")
 const Genre = require("../models/genre")
-const formidable = require("formidable")
+// const formidable = require("formidable")
 const fs = require("fs")
 
 // middleware for req.book
@@ -116,7 +116,13 @@ exports.createBook = async (req, res, next) => {
 //     })
 //   })
 // }
-
+exports.getBooksByGenre = async (req, res) => {
+  let books = await Book.find().populate("genre").exec()
+  books = books.filter((item) => {
+    return item.genre.filter((e) => e.name === req.params.type).length > 0
+  })
+  res.json(books)
+}
 exports.deleteBook = (req, res) => {
   const book = req.book
   book.remove((err, deletedBook) => {
