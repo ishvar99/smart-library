@@ -17,7 +17,9 @@ if (process.env.NODE_ENV == "development") {
 }
 const connectDB = require("../database/db")
 connectDB()
+app.use(express.static("public"))
 app.use(express.json())
+app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use("/api/v1/auth", authRoutes)
 app.use("/api/v1", userRoutes)

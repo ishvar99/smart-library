@@ -1,6 +1,17 @@
 const express = require("express")
 const { getUserByID } = require("../controllers/user")
 const { getGenreByID } = require("../controllers/genre")
+const multer = require("multer")
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "backend/public/uploads/")
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.fieldname + "-" + Date.now())
+  },
+})
+
+var upload = multer({ storage: storage })
 const {
   getBookByID,
   getBook,
@@ -31,7 +42,7 @@ router.post(
   "/book/create/:userID",
   isLoggedin,
   isAuthenticated,
-  isAdmin,
+  upload.single("bookcover"),
   createBook
 )
 
