@@ -19,6 +19,7 @@ exports.getGenre = (req, res) => {
 }
 
 exports.createGenre = (req, res) => {
+  console.log("create genre", req.body)
   let newGenre = new Genre(req.body)
   newGenre.save((err, genre) => {
     if (err) {

@@ -1,5 +1,6 @@
 const Book = require("../models/book")
-const formidable = require("formidable")
+const Genre = require("../models/genre")
+// const formidable = require("formidable")
 const fs = require("fs")
 
 // middleware for req.book
@@ -47,53 +48,81 @@ exports.getBookCoverBg = (req, res, next) => {
 }
 
 // create book
-exports.createBook = (req, res) => {
-  let createForm = new formidable.IncomingForm()
-  createForm.keepExtensions = true
-
-  createForm.parse(req, (err, fields, file) => {
+exports.createBook = async (req, res, next) => {
+  const { title, description, genre } = req.body
+  console.log(genre)
+  const url = req.protocol + "://" + req.get("host")
+  const response = await Genre.findOne({ name: genre })
+  console.log(response)
+  if (!title || !description) {
+    return res.status(400).json({
+      errormsg: "Please provide all the relevant details",
+    })
+  }
+  let newBook = new Book({ title, description })
+  newBook.genre.push(response._id)
+  newBook.bookCover = url + "/resources/" + req.file.filename
+  newBook.save((err, book) => {
     if (err) {
       return res.status(400).json({
-        error: "Might be a problem with the book cover ",
+        error: "An error occured! while saving into database",
       })
     }
-
-    const { title, description, genre, author } = fields
-
-    // check if all the relevent details are present
-    if (!title || !description || !genre || !author) {
-      return res.status(400).json({
-        errormsg: "Please provide all the relevant details",
-      })
-    }
-    let newBook = new Book(fields)
-
-    if (file.bookCover && file.bookCoverBg) {
-      if (
-        file.bookCover > 2 * 1024 * 1024 ||
-        file.bookCoverBg > 4 * 1024 * 1024
-      ) {
-        return res.status(400).json({
-          errormsg: "File size is too big",
-        })
-      }
-      newBook.bookCover.data = fs.readFileSync(file.bookCover.path)
-      newBook.bookCoverBg.data = fs.readFileSync(file.bookCoverBg.path)
-      newBook.bookCover.contentType = file.bookCover.type
-      newBook.bookCoverBg.contentType = file.bookCoverBg.type
-    }
-
-    newBook.save((err, book) => {
-      if (err) {
-        return res.status(400).json({
-          error: "An error occured! while saving into database",
-        })
-      }
-      res.json(book)
-    })
+    res.json(book)
   })
 }
+// exports.createBook = (req, res) => {
+//   let createForm = new formidable.IncomingForm()
+//   createForm.keepExtensions = true
+//   createForm.parse(req, (err, fields, file) => {
+//     if (err) {
+//       return res.status(400).json({
+//         error: "Might be a problem with the book cover ",
+//       })
+//     }
 
+//     const { title, description, genre, author } = fields
+//     console.log(title, description)
+//     // check if all the relevent details are present
+//     if (!title || !description || !genre || !author) {
+//       return res.status(400).json({
+//         errormsg: "Please provide all the relevant details",
+//       })
+//     }
+//     let newBook = new Book(fields)
+
+//     if (file.bookCover && file.bookCoverBg) {
+//       if (
+//         file.bookCover > 2 * 1024 * 1024 ||
+//         file.bookCoverBg > 4 * 1024 * 1024
+//       ) {
+//         return res.status(400).json({
+//           errormsg: "File size is too big",
+//         })
+//       }
+//       newBook.bookCover.data = fs.readFileSync(file.bookCover.path)
+//       newBook.bookCoverBg.data = fs.readFileSync(file.bookCoverBg.path)
+//       newBook.bookCover.contentType = file.bookCover.type
+//       newBook.bookCoverBg.contentType = file.bookCoverBg.type
+//     }
+
+//     newBook.save((err, book) => {
+//       if (err) {
+//         return res.status(400).json({
+//           error: "An error occured! while saving into database",
+//         })
+//       }
+//       res.json(book)
+//     })
+//   })
+// }
+exports.getBooksByGenre = async (req, res) => {
+  let books = await Book.find().populate("genre").exec()
+  books = books.filter((item) => {
+    return item.genre.filter((e) => e.name === req.params.type).length > 0
+  })
+  res.json(books)
+}
 exports.deleteBook = (req, res) => {
   const book = req.book
   book.remove((err, deletedBook) => {

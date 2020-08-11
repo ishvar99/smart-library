@@ -1,12 +1,16 @@
-import React, { useContext, Fragment } from "react"
+import React, { useContext, Fragment, useEffect } from "react"
 import { Navbar, Nav } from "react-bootstrap"
 import { Link } from "react-router-dom"
 import AuthContext from "../../../context/Auth/AuthContext"
 export const Header = () => {
   const context = useContext(AuthContext)
-  const { isAuthenticated, user } = context
-  if (user) console.log(user.name)
-
+  const { isAuthenticated, user, loadUser } = context
+  useEffect(() => {
+    async function getUser() {
+      await loadUser()
+    }
+    getUser()
+  }, [])
   return (
     <div className="Header">
       <Navbar
@@ -40,17 +44,27 @@ export const Header = () => {
               </Fragment>
             ) : (
               <Fragment>
-              <li className="nav-item">
-                <Link to="/login" className="nav-link">
-                  Hello, {user ? user.name.split(" ")[0] : ""}
-                </Link>
-              </li>
-              <li className='nav-item'>
-              <Link to='/profile' className='nav-link'>
-                Profile
-              </Link>
-            </li>
-            </Fragment>
+                <li className="nav-item">
+                  <Link to="/login" className="nav-link">
+                    Hello, {user ? user.name.split(" ")[0] : ""}
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link to="/profile" className="nav-link">
+                    Profile
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link to="/genre" className="nav-link">
+                    Add Genre
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link to="/book" className="nav-link">
+                    Add Book
+                  </Link>
+                </li>
+              </Fragment>
             )}
           </Nav>
         </Navbar.Collapse>
