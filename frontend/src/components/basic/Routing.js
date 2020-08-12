@@ -7,6 +7,7 @@ import { Profile } from "../pages/Profile/Profile"
 import { AddBook } from "../pages/AddBook/AddBook"
 import { ManageGenre } from "../pages/ManageGenre/ManageGenre"
 import { Books } from "../pages/Books/Books"
+import { Book } from "../pages/Book/Book"
 export const Routing = () => {
   return (
     <Switch>
@@ -17,6 +18,7 @@ export const Routing = () => {
       <Route exact path="/book" component={AddBook}></Route>
       <Route exact path="/genre" component={ManageGenre}></Route>
       <Route exact path="/books/:type" component={Books}></Route>
+      <Route exact path="/books/:type/:id" component={Book}></Route>
     </Switch>
   )
 }

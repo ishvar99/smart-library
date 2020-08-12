@@ -27,7 +27,7 @@ export const Trending = () => {
                 <div class="card-body">
                   <p class="card-text">
                     <Link to={`/books/${item.name}`} className="nav-link">
-                      {item.name}
+                      {item.name.slice(0, 1).toUpperCase() + item.name.slice(1)}
                     </Link>
                   </p>
                 </div>

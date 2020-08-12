@@ -22,7 +22,7 @@ export const ManageGenre = () => {
       setLoading(true)
       await axios.post(
         `/api/v1/genre/create/${userId}`,
-        JSON.stringify({ name }),
+        JSON.stringify({ name: name.toLowerCase() }),
         {
           headers: {
             "Content-Type": "application/json",
