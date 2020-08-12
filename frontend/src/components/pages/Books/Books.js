@@ -26,7 +26,10 @@ export const Books = ({ match }) => {
                   <img src={item.bookCover} class="card-img-top" alt="" />
                   <div class="card-body">
                     <p class="card-text" style={{ textAlign: "center" }}>
-                      <Link to={`/book/${item._id}`} className="nav-link">
+                      <Link
+                        to={`/books/${match.params.type}/${item._id}`}
+                        className="nav-link"
+                      >
                         {item.title}
                       </Link>
                     </p>

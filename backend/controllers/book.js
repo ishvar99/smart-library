@@ -4,13 +4,9 @@ const Genre = require("../models/genre")
 const fs = require("fs")
 
 // middleware for req.book
-exports.getBookByID = (req, res, next, id) => {
-  Book.findById(id).exec((err, book) => {
-    if (err) {
-      return res.status(400).json({
-        error: "An error occured... Unable to find",
-      })
-    }
+exports.getBookByID = async (req, res, next, id) => {
+  try {
+    const book = await Book.findById(id).populate("genre")
     if (!book) {
       return res.status(400).json({
         error: "Book not found!",
@@ -18,41 +14,23 @@ exports.getBookByID = (req, res, next, id) => {
     }
     req.book = book
     next()
-  })
+  } catch (error) {
+    return res.status(400).json({
+      error: "An error occured... Unable to find",
+    })
+  }
 }
 
 // get book route
 exports.getBook = (req, res) => {
-  req.book.bookCover = undefined
-  req.book.bookCoverBg = undefined
-  // console.log(req.book)
   return res.json(req.book)
 }
 
-// get book cover - middleware
-exports.getBookCover = (req, res, next) => {
-  if (req.book.bookCover.data) {
-    res.set("Content-Type", req.book.bookCover.contentType)
-    return res.send(req.book.bookCover.data)
-  }
-  next()
-}
-
-// get book cover Bg- middleware
-exports.getBookCoverBg = (req, res, next) => {
-  if (req.book.bookCoverBg.data) {
-    res.set("Content-Type", req.book.bookCoverBg.contentType)
-    return res.send(req.book.bookCoverBg.data)
-  }
-  next()
-}
-
-// create book
 exports.createBook = async (req, res, next) => {
   const { title, description, genre } = req.body
-  console.log(genre)
+  const parsedGenre = JSON.parse(genre)
   const url = req.protocol + "://" + req.get("host")
-  const response = await Genre.findOne({ name: genre })
+  const response = await Genre.find({ name: { $in: parsedGenre } })
   console.log(response)
   if (!title || !description) {
     return res.status(400).json({
@@ -60,7 +38,10 @@ exports.createBook = async (req, res, next) => {
     })
   }
   let newBook = new Book({ title, description })
-  newBook.genre.push(response._id)
+  response.forEach((genre) => {
+    newBook.genre.push(genre._id)
+  })
+  newBook.author.push()
   newBook.bookCover = url + "/resources/" + req.file.filename
   newBook.save((err, book) => {
     if (err) {
@@ -117,6 +98,7 @@ exports.createBook = async (req, res, next) => {
 //   })
 // }
 exports.getBooksByGenre = async (req, res) => {
+  console.log(req.genre)
   let books = await Book.find().populate("genre").exec()
   books = books.filter((item) => {
     return item.genre.filter((e) => e.name === req.params.type).length > 0

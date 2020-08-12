@@ -20,7 +20,9 @@ export const Header = () => {
         variant="dark"
         className="p-3"
       >
-        <Navbar.Brand href="/">Online Library</Navbar.Brand>
+        <Link to="/">
+          <Navbar.Brand>Online Library</Navbar.Brand>
+        </Link>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="ml-auto">

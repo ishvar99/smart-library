@@ -12,15 +12,18 @@ var storage = multer.diskStorage({
   },
 })
 
-var upload = multer({ storage: storage })
+var upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 2 * 1024 * 1024,
+  },
+})
 const {
   getBookByID,
   getBook,
   createBook,
   updateBook,
   deleteBook,
-  getBookCover,
-  getBookCoverBg,
   getBooksByGenre,
 } = require("../controllers/book")
 const {
@@ -32,14 +35,14 @@ const router = express.Router()
 
 // params
 router.param("userID", getUserByID)
-router.param("genreID", getGenreByID)
+// router.param("genreID", getGenreByID)
 router.param("bookID", getBookByID)
 
 //routes
 router.get("/book/:bookID", getBook)
 router.get("/books/:type", getBooksByGenre)
-router.get("/book/cover/:bookID", getBookCover)
-router.get("/book/coverbg/:bookID", getBookCoverBg)
+// router.get("/book/cover/:bookID", getBookCover)
+// router.get("/book/coverbg/:bookID", getBookCoverBg)
 
 router.post(
   "/book/create/:userID",
