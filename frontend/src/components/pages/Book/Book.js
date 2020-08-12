@@ -21,9 +21,12 @@ export const Book = ({ match }) => {
           </div>
           <ul class="list-group list-group-flush">
             <li class="list-group-item">
-              Genre: {book.genre.map((e) => e.name + ",")}
+              Genre:{" "}
+              {book.genre.map(
+                (e, i) => e.name + (i == book.genre.length - 1 ? " " : ", ")
+              )}
             </li>
-            <li class="list-group-item">Dapibus ac facilisis in</li>
+            <li class="list-group-item">Author</li>
             <li class="list-group-item">Vestibulum at eros</li>
           </ul>
           {/* <div class="card-body">

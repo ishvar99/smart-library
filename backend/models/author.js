@@ -33,8 +33,7 @@ const authorSchema = new mongoose.Schema({
     },
   ],
   authorPicture: {
-    data: Buffer,
-    contentType: String,
+    type: String,
   },
 })
 

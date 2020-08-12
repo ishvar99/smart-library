@@ -23,33 +23,10 @@ exports.getBookByID = async (req, res, next, id) => {
 
 // get book route
 exports.getBook = (req, res) => {
-  // req.book.bookCover = undefined
-  // req.book.bookCoverBg = undefined
-  // console.log(req.book)
   return res.json(req.book)
 }
 
-// get book cover - middleware
-// exports.getBookCover = (req, res, next) => {
-//   if (req.book.bookCover.data) {
-//     res.set("Content-Type", req.book.bookCover.contentType)
-//     return res.send(req.book.bookCover.data)
-//   }
-//   next()
-// }
-
-// get book cover Bg- middleware
-// exports.getBookCoverBg = (req, res, next) => {
-//   if (req.book.bookCoverBg.data) {
-//     res.set("Content-Type", req.book.bookCoverBg.contentType)
-//     return res.send(req.book.bookCoverBg.data)
-//   }
-//   next()
-// }
-
-// create book
 exports.createBook = async (req, res, next) => {
-  console.log("Create Book")
   const { title, description, genre } = req.body
   const parsedGenre = JSON.parse(genre)
   const url = req.protocol + "://" + req.get("host")
@@ -64,7 +41,7 @@ exports.createBook = async (req, res, next) => {
   response.forEach((genre) => {
     newBook.genre.push(genre._id)
   })
-
+  newBook.author.push()
   newBook.bookCover = url + "/resources/" + req.file.filename
   newBook.save((err, book) => {
     if (err) {
