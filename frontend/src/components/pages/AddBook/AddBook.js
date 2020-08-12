@@ -10,7 +10,6 @@ export const AddBook = () => {
   const [loading, setLoading] = useState(false)
   const [title, setTitle] = useState("")
   const [description, setDescription] = useState("")
-  const [genre, setGenre] = useState()
   const [bookCover, setBookCover] = useState("")
   const [userId, setUserId] = useState()
   const [genresList, setGenresList] = useState([])
@@ -18,7 +17,6 @@ export const AddBook = () => {
     async function loadGenres() {
       const response = await axios.get("/api/v1/genres")
       setGenresList(response.data)
-      setGenre(response.data[0].name)
     }
     loadGenres()
   }, [])
@@ -30,10 +28,16 @@ export const AddBook = () => {
   }, [user])
   async function addBook(e) {
     e.preventDefault()
+    let arr = []
+    document
+      .querySelectorAll("#form-check input[type=checkbox]:checked")
+      .forEach((val) => {
+        arr.push(val.value)
+      })
     let fd = new FormData()
     fd.append("title", title)
     fd.append("description", description)
-    fd.append("genre", genre)
+    fd.append("genre", JSON.stringify(arr))
     fd.append("bookcover", bookCover)
 
     try {
@@ -72,7 +76,21 @@ export const AddBook = () => {
           ></textarea>
         </div>
         <div class="form-group">
-          <select
+          {genresList.map((e, i) => (
+            <div class="form-check" id="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id={e.name}
+                value={e.name}
+              />
+              <label class="form-check-label">
+                {e.name.slice(0, 1).toUpperCase() + e.name.slice(1)}
+              </label>
+            </div>
+          ))}
+
+          {/* <select
             class="form-control"
             onChange={(e) => setGenre(e.target.value)}
           >
@@ -81,7 +99,7 @@ export const AddBook = () => {
                 {e.name}
               </option>
             ))}
-          </select>
+          </select> */}
         </div>
         <div class="form-group row">
           <label class="col-sm-2 col-form-label">Choose Image</label>
