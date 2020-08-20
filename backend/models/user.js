@@ -5,7 +5,7 @@ const crypto = require("crypto")
 
 const { ObjectId } = mongoose.Schema.Types
 
-const AuthorSchema = new mongoose.model({
+const AuthorSchema = new mongoose.Schema({
   nickname: {
     type: String,
     trim: true,
@@ -86,9 +86,7 @@ const userSchema = new mongoose.Schema(
       type: ObjectId,
       ref: "Plan",
     },
-    ifAuthor: {
-      type: AuthorSchema,
-    },
+    ifAuthor: AuthorSchema,
   },
   { timestamps: true }
 )
