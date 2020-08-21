@@ -28,7 +28,7 @@ const bookSchema = new mongoose.Schema({
   author: [
     {
       type: ObjectId,
-      ref: "Author",
+      ref: "User",
     },
   ],
   rating: [

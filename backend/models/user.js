@@ -2,6 +2,36 @@ const mongoose = require("mongoose")
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 const crypto = require("crypto")
+
+const { ObjectId } = mongoose.Schema.Types
+
+const AuthorSchema = new mongoose.Schema({
+  nickname: {
+    type: String,
+    trim: true,
+    min: 2,
+  },
+  origin: {
+    //country
+    type: String,
+    required: true,
+    trim: true,
+  },
+  books: [
+    {
+      type: ObjectId,
+      ref: "Book",
+    },
+  ],
+  awards: {
+    type: [String],
+  },
+  rating: {
+    type: Number,
+    defaut: 0,
+  },
+})
+
 const userSchema = new mongoose.Schema(
   {
     name: {
@@ -53,12 +83,10 @@ const userSchema = new mongoose.Schema(
     resetPasswordToken: String,
     resetPasswordExpire: Date,
     plan: {
-      type: Number,
-      default: 0,
-      // 0 - free plan,
-      // 1 - basic plan,
-      // 2 - premium plan
+      type: ObjectId,
+      ref: "Plan",
     },
+    ifAuthor: AuthorSchema,
   },
   { timestamps: true }
 )
