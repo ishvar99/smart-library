@@ -9,6 +9,7 @@ export const PersonalInformation = () => {
   const [validated, setValidated] = useState(false)
   const [name, setName] = useState("")
   const [age, setAge] = useState("")
+  const [bio, setBio] = useState("")
   const [email, setEmail] = useState("")
   const handleEdit = (e) => {
     setEdit(!edit)
@@ -18,6 +19,7 @@ export const PersonalInformation = () => {
       setName(user.name)
       setAge(user.age)
       setEmail(user.email)
+      setBio(user.bio)
     }
   }, [user])
   const handleSubmit = async (event) => {
@@ -33,7 +35,7 @@ export const PersonalInformation = () => {
       try {
         const response = await axios.put(
           `/api/v1/user/${user._id}`,
-          JSON.stringify({ name, age }),
+          JSON.stringify({ name, age, bio }),
           {
             headers: {
               "Content-Type": "application/json",
@@ -96,15 +98,20 @@ export const PersonalInformation = () => {
 
             <Form.Group>
               <Form.Label>Bio</Form.Label>
-              <Form.Control as='textarea' rows='3' disabled={!edit} />
+              <Form.Control
+                value={bio}
+                onChange={(e) => setBio(e.target.value)}
+                as='textarea'
+                rows='3'
+                disabled={!edit}
+              />
             </Form.Group>
 
             <Form.Row>
               <Form.Group as={Col}>
                 <Form.Label>Email address</Form.Label>
                 <Form.Control
-                  required
-                  disabled={!edit}
+                  disabled
                   type='email'
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
