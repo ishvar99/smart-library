@@ -49,8 +49,13 @@ const AuthState = (props) => {
       dispatch({ type: REGISTER_FAIL, payload: err.response.data.error })
     }
   }
-  const logout = () => {
-    dispatch({ type: LOGOUT })
+  const logout = async () => {
+    try {
+      await axios.get("/api/v1/auth/logout")
+      dispatch({ type: LOGOUT })
+    } catch (err) {
+      console.log(err)
+    }
   }
   const loginUser = async (formData) => {
     try {
