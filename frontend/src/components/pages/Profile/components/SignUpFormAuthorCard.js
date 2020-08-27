@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from "react"
 import { Card, Button, Modal } from "react-bootstrap"
 import AuthContext from "../../../../context/Auth/AuthContext"
+import axios from "axios"
 
 const originData = [
   "Asia",
@@ -23,6 +24,35 @@ export const SignUpFormAuthorCard = () => {
 
   const handleClose = () => setShow(false)
   const handleShow = () => setShow(true)
+
+  const formData = {
+    role: 1,
+    ifAuthor: {
+      origin,
+      nickname,
+    },
+  }
+
+  const updateAndPostData = async () => {
+    try {
+      const response = await axios.put(
+        `/api/v1/user/signupauthor/${user._id}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      console.log(response)
+    } catch (error) {
+      console.log(error.response)
+    }
+  }
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    updateAndPostData()
+  }
 
   useEffect(() => {
     if (user) {
@@ -56,12 +86,12 @@ export const SignUpFormAuthorCard = () => {
                 </Modal.Header>
                 <Modal.Body>
                   <div>
-                    <form noValidate>
+                    <form noValidate onSubmit={handleSubmit}>
                       <div className='form-group'>
                         <label>Name</label>
                         <input
                           disabled
-                          className='form-control'
+                          className='form-control form-control-sm'
                           type='text'
                           value={name}
                         />
@@ -70,7 +100,7 @@ export const SignUpFormAuthorCard = () => {
                         <label>Email</label>
                         <input
                           disabled
-                          className='form-control'
+                          className='form-control form-control-sm'
                           type='email'
                           value={email}
                         />
@@ -78,7 +108,7 @@ export const SignUpFormAuthorCard = () => {
                       <div className='form-group'>
                         <label>Nickname</label>
                         <input
-                          className='form-control'
+                          className='form-control form-control-sm'
                           value={nickname}
                           onChange={(e) => setNickname(e.target.value)}
                         />
@@ -86,9 +116,10 @@ export const SignUpFormAuthorCard = () => {
                       <div className='form-group'>
                         <label>Origin</label>
                         <select
-                          class='form-control'
+                          className='form-control form-control-sm'
                           onChange={(e) => setOrigin(e.target.value)}
                         >
+                          <option>--- Select ---</option>
                           {originData.map((item, i) => {
                             return (
                               <option key={i} value={item}>
@@ -97,6 +128,12 @@ export const SignUpFormAuthorCard = () => {
                             )
                           })}
                         </select>
+                      </div>
+                      <div className='form-group'>
+                        <p className='text-muted text-small'>
+                          By continuing, you agree to the Terms and Conditions
+                          of Use and Privacy Notice.
+                        </p>
                       </div>
                     </form>
                   </div>
@@ -108,7 +145,11 @@ export const SignUpFormAuthorCard = () => {
                   >
                     Cancel
                   </button>
-                  <button className='btn btn-sm btn-primary'>
+                  <button
+                    className='btn btn-sm btn-primary'
+                    type='submit'
+                    onSubmit={handleSubmit}
+                  >
                     Upgrade as Author
                   </button>
                 </Modal.Footer>
