@@ -1,7 +1,10 @@
-import React from "react"
+import React, { useContext } from "react"
 import { ListGroup } from "react-bootstrap"
+import AuthContext from "../../../../context/Auth/AuthContext"
 
 export const ProfileSidebar = () => {
+  const context = useContext(AuthContext)
+
   const handleTabEvent = (event, tabName) => {
     let i, tabcontent, tablinks
     tabcontent = document.getElementsByClassName("tabContent")
@@ -48,7 +51,7 @@ export const ProfileSidebar = () => {
         >
           My Wishlist
         </ListGroup.Item>
-        <ListGroup.Item>Logout</ListGroup.Item>
+        <ListGroup.Item onClick={context.logout}>Logout</ListGroup.Item>
       </ListGroup>
     </div>
   )
