@@ -1,10 +1,19 @@
 import React, { useContext, Fragment, useEffect } from "react"
 import { Navbar, Nav } from "react-bootstrap"
-import { Link } from "react-router-dom"
+import { Link, useHistory } from "react-router-dom"
 import AuthContext from "../../../context/Auth/AuthContext"
 export const Header = () => {
+  let history = useHistory()
   const context = useContext(AuthContext)
-  const { isAuthenticated, user, loadUser } = context
+  const { isAuthenticated, user, loadUser, logout } = context
+  const logoutUser = async () => {
+    try {
+      await logout()
+      history.push("/")
+    } catch (e) {
+      console.log(e)
+    }
+  }
   useEffect(() => {
     async function getUser() {
       await loadUser()
@@ -65,6 +74,15 @@ export const Header = () => {
                   <Link to="/book" className="nav-link">
                     Add Book
                   </Link>
+                </li>
+                <li className="nav-item">
+                  <a
+                    onClick={logoutUser}
+                    style={{ cursor: "pointer" }}
+                    className="nav-link"
+                  >
+                    Logout
+                  </a>
                 </li>
               </Fragment>
             )}
