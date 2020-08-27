@@ -16,7 +16,7 @@ export const ProfileSidebar = () => {
     event.currentTarget.className += " active"
   }
   return (
-    <div className='tab'>
+    <div className='tab mb-3'>
       <ListGroup>
         <ListGroup.Item
           disabled
