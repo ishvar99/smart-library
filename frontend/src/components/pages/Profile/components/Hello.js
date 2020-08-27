@@ -12,7 +12,7 @@ export const Hello = () => {
     <div className='Hello mb-3'>
       <Card>
         <Card.Body>
-          <h6>Hello,</h6>
+          <h6>Hello, {user.role === 1 && <span>Author</span>}</h6>
           <h5>{user.name}</h5>
         </Card.Body>
       </Card>
