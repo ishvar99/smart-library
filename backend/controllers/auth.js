@@ -45,7 +45,11 @@ exports.registerUser = asyncHandler(async (req, res, next) => {
       const url = `${req.protocol}://${req.get(
         "host"
       )}/api/v1/auth/confirmation/${emailToken}`
-      sendEmail(url, user, process.env.CONFIRM_ACCOUNT)
+      try {
+        sendEmail(url, user, process.env.CONFIRM_ACCOUNT)
+      } catch (err) {
+        console.log(err)
+      }
     }
   )
   sendTokenResponse(user, 200, res)
