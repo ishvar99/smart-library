@@ -6,6 +6,7 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   LOADING,
+  UPDATE_USER,
   LOGOUT,
   AUTH_ERROR,
 } from "../types"
@@ -49,6 +50,23 @@ const AuthState = (props) => {
       dispatch({ type: REGISTER_FAIL, payload: err.response.data.error })
     }
   }
+  const updateUser = async (id, formData) => {
+    dispatch({ type: LOADING, payload: true })
+    try {
+      const response = await axios.put(
+        `/api/v1/user/${id}`,
+        JSON.stringify(formData),
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      dispatch({ type: UPDATE_USER, payload: response })
+    } catch (e) {
+      console.log(e)
+    }
+  }
   const logout = async () => {
     try {
       await axios.get("/api/v1/auth/logout")
@@ -86,6 +104,7 @@ const AuthState = (props) => {
         loginUser,
         loadUser,
         logout,
+        updateUser,
         error: state.error,
       }}
     >
