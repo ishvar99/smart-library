@@ -5,6 +5,7 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   LOADING,
+  UPDATE_USER,
   LOGOUT,
   AUTH_ERROR,
 } from "../types"
@@ -38,6 +39,13 @@ export default (state, action) => {
         loading: false,
         user: null,
         error: action.payload,
+      }
+    }
+    case UPDATE_USER: {
+      return {
+        ...state,
+        loading: false,
+        user: action.payload.data,
       }
     }
     case USER_LOADED: {
