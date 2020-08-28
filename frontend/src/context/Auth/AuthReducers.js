@@ -13,6 +13,7 @@ export default (state, action) => {
   switch (action.type) {
     case REGISTER_SUCCESS:
     case LOGIN_SUCCESS: {
+      localStorage.setItem("loggedIn", true)
       return {
         ...state,
         isAuthenticated: true,
@@ -29,7 +30,8 @@ export default (state, action) => {
     }
     case AUTH_ERROR:
     case REGISTER_FAIL:
-    case LOGIN_FAIL:
+    case LOGIN_FAIL: {
+      localStorage.removeItem("loggedIn")
       return {
         ...state,
         isAuthenticated: false,
@@ -37,7 +39,7 @@ export default (state, action) => {
         user: null,
         error: action.payload,
       }
-
+    }
     case USER_LOADED: {
       console.log(action.payload)
       return {
@@ -48,14 +50,15 @@ export default (state, action) => {
         error: null,
       }
     }
-    case LOGOUT:
+    case LOGOUT: {
+      localStorage.removeItem("loggedIn")
       return {
         ...state,
         isAuthenticated: false,
         loading: false,
         user: null,
       }
-
+    }
     default:
       return state
   }

@@ -16,7 +16,7 @@ const sendTokenResponse = (user, statusCode, res) => {
     expires: new Date(
       Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000
     ),
-    httpOnly: true, //can't be read on client side using js (document.cookie)
+    httpOnly: false, //can be read on client side using js (document.cookie)
   }
   if (process.env.NODE_ENV === "production") {
     options.secure = true
