@@ -16,7 +16,7 @@ export const Header = () => {
   }
   useEffect(() => {
     async function getUser() {
-      await loadUser()
+      if (localStorage.getItem("loggedIn")) await loadUser()
     }
     getUser()
   }, [])
