@@ -14,6 +14,7 @@ export const Slider = ({ data }) => {
       <Carousel
         className='carousel-container'
         fade={true}
+        indicators={false}
         activeIndex={index}
         onSelect={handleSelect}
       >
