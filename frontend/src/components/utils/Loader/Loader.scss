@@ -1,14 +1,26 @@
+.loader-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: black;
+  height: 100vh;
+  width: 100%;
+  z-index: 10;
+  opacity: 0.6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  h6 {
+    opacity: 1;
+  }
+}
 .spinner {
-  --color: black;
-  --duration: 6.8s;
-  width: 32px;
-  height: 12px;
+  --color: beige;
+  --duration: 9s;
   position: absolute;
   z-index: 10;
-  top: 50%;
-  left: 50%;
-  margin: 32px 0 0 0;
-  zoom: 1.5;
+  zoom: 1.3;
 }
 .spinner .inner {
   width: 32px;
