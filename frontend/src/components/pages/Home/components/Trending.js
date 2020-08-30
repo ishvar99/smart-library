@@ -4,34 +4,39 @@ import axios from "axios"
 import { Link } from "react-router-dom"
 
 export const Trending = () => {
-  const [genresList, setGenresList] = useState([])
+  const [booksList, setBooksList] = useState([])
   useEffect(() => {
-    async function loadGenres() {
-      const response = await axios.get("/api/v1/genres")
+    async function loadBooks() {
+      const response = await axios.get("/api/v1/books")
       console.log(response.data)
-      setGenresList(response.data)
+      setBooksList(response.data)
     }
-    loadGenres()
+    loadBooks()
   }, [])
   return (
-    <div className="Trending">
-      <div className="section-title">
+    <div className='Trending'>
+      <div className='section-title'>
         <h4>Treadings</h4>
         <h6>Explore</h6>
       </div>
-      <div className="main-wrapper">
-        {genresList.map((item, i) => {
+      <div className='main-wrapper'>
+        {booksList.map((item, index) => {
           return (
-            <div key={i} className="book-wrapper">
-              <div class="card" style={{ width: "18rem" }}>
-                <div class="card-body">
-                  <p class="card-text">
-                    <Link to={`/books/${item.name}`} className="nav-link">
-                      {item.name.slice(0, 1).toUpperCase() + item.name.slice(1)}
-                    </Link>
-                  </p>
-                </div>
-              </div>
+            // <div key={i} className='book-wrapper'>
+            //   <div class='card' style={{ width: "18rem" }}>
+            //     <div class='card-body'>
+            //       <p class='card-text'>
+            //         <Link to={`/books/${item.name}`} className='nav-link'>
+            //           {item.title}
+            //           {item._id}
+            //           {/* {item.name.slice(0, 1).toUpperCase() + item.name.slice(1)} */}
+            //         </Link>
+            //       </p>
+            //     </div>
+            //   </div>
+            // </div>
+            <div key={index} className='book-wrapper card border-0 shadow'>
+              <img className='book-img' src={item.bookCover} alt='book-cover' />
             </div>
           )
         })}
