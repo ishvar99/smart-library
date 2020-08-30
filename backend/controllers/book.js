@@ -119,3 +119,21 @@ exports.deleteBook = (req, res) => {
     })
   })
 }
+
+exports.getAllBooks = (req, res) => {
+  let limit = req.query.limit ? parseInt(req.query.limit) : 12 // default limit set to 12
+  let sortBy = req.query.sort ? req.query.sort : { name: 1 } // will sort alphabetical by book name
+
+  Book.find()
+    .populate("genre user")
+    .limit(limit)
+    .sort(sortBy)
+    .exec((err, books) => {
+      if (err) {
+        return res.status(400).json({
+          error: "An error occured! Please try again after sometime",
+        })
+      }
+      res.json(books)
+    })
+}
