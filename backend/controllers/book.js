@@ -119,3 +119,38 @@ exports.deleteBook = (req, res) => {
     })
   })
 }
+
+exports.getAllBooks = (req, res) => {
+  let limit = req.query.limit ? parseInt(req.query.limit) : 6 // default limit set to 12
+  let sortBy = req.query.sort ? req.query.sort : { name: 1 } // will sort alphabetical by book name
+
+  Book.find()
+    .populate("genre user")
+    .limit(limit)
+    .sort(sortBy)
+    .exec((err, books) => {
+      if (err) {
+        return res.status(400).json({
+          error: "An error occured! Please try again after sometime",
+        })
+      }
+      res.json(books)
+    })
+}
+
+exports.getBookByAuthorName = (req, res) => {
+  const author = req.user
+  Book.find()
+    .populate("user")
+    .exec((err, books) => {
+      if (err) {
+        return res.status(400).json({
+          error: "An error occured! Please try again after sometime",
+        })
+      }
+      const searchResult = books.map((book) => {
+        return book.user.filter((obj) => obj.name === author.name)
+      })
+      res.json(searchResult)
+    })
+}
