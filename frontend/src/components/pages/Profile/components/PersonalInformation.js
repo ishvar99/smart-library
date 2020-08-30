@@ -1,11 +1,10 @@
 import React, { useState, useContext, useEffect } from "react"
-import { Loader } from "../../../utils/Loader/Loader"
 import { Card, Form, Button, Col } from "react-bootstrap"
 import axios from "axios"
 import AuthContext from "../../../../context/Auth/AuthContext"
 export const PersonalInformation = () => {
   const context = useContext(AuthContext)
-  const { user, updateUser, loading } = context
+  const { user, updateUser } = context
   const [edit, setEdit] = useState(false)
   const [validated, setValidated] = useState(false)
   const [name, setName] = useState("")
@@ -38,14 +37,14 @@ export const PersonalInformation = () => {
   }
   return (
     <>
-      {loading ? <Loader /> : null}
-      <div className="tabContent" id="PersonalInformation">
-        <Card className="p-3">
+      {/* {loading ? <Loader /> : null} */}
+      <div className='tabContent' id='PersonalInformation'>
+        <Card className='p-3'>
           <Card.Title>
             Personal Information
             <Button
-              type="button"
-              className=" btn btn-sm btn-light bg-white text-primary float-right"
+              type='button'
+              className=' btn btn-sm btn-light bg-white text-primary float-right'
               onClick={handleEdit}
             >
               {!edit ? <span>Edit</span> : <span> Cancel</span>}
@@ -59,13 +58,13 @@ export const PersonalInformation = () => {
                     <Form.Label>Name</Form.Label>
                     <Form.Control
                       required
-                      type="text"
-                      id="name"
+                      type='text'
+                      id='name'
                       value={name}
                       disabled={!edit}
                       onChange={(e) => setName(e.target.value)}
                     />
-                    <Form.Control.Feedback type="invalid">
+                    <Form.Control.Feedback type='invalid'>
                       Please enter your name
                     </Form.Control.Feedback>
                   </Form.Group>
@@ -73,13 +72,13 @@ export const PersonalInformation = () => {
                     <Form.Label>Age</Form.Label>
                     <Form.Control
                       required
-                      type="number"
+                      type='number'
                       value={age}
-                      id="age"
+                      id='age'
                       onChange={(e) => setAge(e.target.value)}
                       disabled={!edit}
                     />
-                    <Form.Control.Feedback type="invalid">
+                    <Form.Control.Feedback type='invalid'>
                       Age is required
                     </Form.Control.Feedback>
                   </Form.Group>
@@ -91,8 +90,8 @@ export const PersonalInformation = () => {
                 <Form.Control
                   value={bio}
                   onChange={(e) => setBio(e.target.value)}
-                  as="textarea"
-                  rows="3"
+                  as='textarea'
+                  rows='3'
                   disabled={!edit}
                 />
               </Form.Group>
@@ -102,18 +101,18 @@ export const PersonalInformation = () => {
                   <Form.Label>Email address</Form.Label>
                   <Form.Control
                     disabled
-                    type="email"
+                    type='email'
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    id="email"
+                    id='email'
                   />
-                  <Form.Control.Feedback type="invalid">
+                  <Form.Control.Feedback type='invalid'>
                     Enter a valid email address
                   </Form.Control.Feedback>
                 </Form.Group>
               </Form.Row>
 
-              <Button variant="primary" type="submit" disabled={!edit}>
+              <Button variant='primary' type='submit' disabled={!edit}>
                 Submit
               </Button>
             </Form>
