@@ -4,8 +4,7 @@ import {
   USER_LOADED,
   LOGIN_SUCCESS,
   LOGIN_FAIL,
-  LOADING,
-  UPDATE_USER,
+  AUTH_LOADING,
   LOGOUT,
   AUTH_ERROR,
 } from "../types"
@@ -22,7 +21,7 @@ export default (state, action) => {
         error: null,
       }
     }
-    case LOADING: {
+    case AUTH_LOADING: {
       return {
         ...state,
         loading: action.payload,
@@ -41,13 +40,7 @@ export default (state, action) => {
         error: action.payload,
       }
     }
-    case UPDATE_USER: {
-      return {
-        ...state,
-        loading: false,
-        user: action.payload.data,
-      }
-    }
+
     case USER_LOADED: {
       console.log(action.payload)
       return {
