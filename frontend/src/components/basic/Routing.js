@@ -8,15 +8,16 @@ import { AddBook } from "../pages/AddBook/AddBook"
 import { ManageGenre } from "../pages/ManageGenre/ManageGenre"
 import { Books } from "../pages/Books/Books"
 import { Book } from "../pages/Book/Book"
+import PrivateRoute from "../basic/PrivateRoute"
 export const Routing = () => {
   return (
     <Switch>
       <Route exact path="/" component={Home}></Route>
       <Route exact path="/register" component={Register}></Route>
       <Route exact path="/login" component={Login}></Route>
-      <Route exact path="/profile" component={Profile}></Route>
-      <Route exact path="/book" component={AddBook}></Route>
-      <Route exact path="/genre" component={ManageGenre}></Route>
+      <PrivateRoute exact path="/profile" component={Profile}></PrivateRoute>
+      <PrivateRoute exact path="/book" component={AddBook}></PrivateRoute>
+      <PrivateRoute exact path="/genre" component={ManageGenre}></PrivateRoute>
       <Route exact path="/books/:type" component={Books}></Route>
       <Route exact path="/books/:type/:id" component={Book}></Route>
     </Switch>
