@@ -13,11 +13,14 @@
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
-    width: 100%;
+    width: 80vw;
+    flex-wrap: nowrap;
     overflow: auto;
 
     .book-wrapper {
       margin: 0 15px;
+      height: 200px;
+      width: 100%;
       .book-img {
         border-radius: 10px;
         height: 200px;
