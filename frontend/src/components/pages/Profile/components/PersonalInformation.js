@@ -1,11 +1,10 @@
 import React, { useState, useContext, useEffect } from "react"
 import { Loader } from "../../../utils/Loader/Loader"
 import { Card, Form, Button, Col } from "react-bootstrap"
-import axios from "axios"
 import AuthContext from "../../../../context/Auth/AuthContext"
 export const PersonalInformation = () => {
   const context = useContext(AuthContext)
-  const { user, updateUser, loading } = context
+  const { user, updateUser } = context
   const [edit, setEdit] = useState(false)
   const [validated, setValidated] = useState(false)
   const [name, setName] = useState("")
@@ -38,7 +37,6 @@ export const PersonalInformation = () => {
   }
   return (
     <>
-      {loading ? <Loader /> : null}
       <div className="tabContent" id="PersonalInformation">
         <Card className="p-3">
           <Card.Title>
