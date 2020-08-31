@@ -14,12 +14,12 @@ export const Trending = () => {
     loadBooks()
   }, [])
   return (
-    <div className='Trending'>
-      <div className='section-title'>
+    <div className="Trending">
+      <div className="section-title">
         <h4>Treadings</h4>
         <h6>Explore</h6>
       </div>
-      <div className='main-wrapper'>
+      <div className="main-wrapper">
         {booksList.map((item, index) => {
           return (
             // <div key={i} className='book-wrapper'>
@@ -35,8 +35,8 @@ export const Trending = () => {
             //     </div>
             //   </div>
             // </div>
-            <div key={index} className='book-wrapper card border-0 shadow'>
-              <img className='book-img' src={item.bookCover} alt='book-cover' />
+            <div key={index} className="book-wrapper card border-0 shadow">
+              <img className="book-img" src={item.bookCover} alt="book-cover" />
             </div>
           )
         })}

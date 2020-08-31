@@ -1,9 +1,12 @@
 import React, { useState, useContext, useEffect } from "react"
 import { Card, Form, Button, Col } from "react-bootstrap"
 import AuthContext from "../../../../context/Auth/AuthContext"
+import ProfileContext from "../../../../context/Profile/ProfileContext"
 export const PersonalInformation = () => {
-  const context = useContext(AuthContext)
-  const { user, updateUser } = context
+  const authContext = useContext(AuthContext)
+  const profileContext = useContext(ProfileContext)
+  const { user, loadUser } = authContext
+  const { updateProfile } = profileContext
   const [edit, setEdit] = useState(false)
   const [validated, setValidated] = useState(false)
   const [name, setName] = useState("")
@@ -30,13 +33,13 @@ export const PersonalInformation = () => {
     }
     setValidated(true)
     if (form.checkValidity()) {
-      await updateUser(user._id, { name, age, bio })
+      await updateProfile(user._id, { name, age, bio })
+      await loadUser()
       setEdit(!edit)
     }
   }
   return (
     <>
-      {/* {loading ? <Loader /> : null} */}
       <div className="tabContent" id="PersonalInformation">
         <Card className="p-3">
           <Card.Title>

@@ -1,7 +1,6 @@
 import React, { useContext, useState, useEffect } from "react"
 import axios from "axios"
 import AuthContext from "../../../context/Auth/AuthContext"
-import Loading from "../../utils/Loading/Loading.jsx"
 import { useHistory } from "react-router-dom"
 export const AddBook = () => {
   const context = useContext(AuthContext)
@@ -115,13 +114,7 @@ export const AddBook = () => {
           </div>
         </div>
 
-        <button
-          type="submit"
-          className="btn btn-primary"
-          style={{ opacity: loading ? "0.7" : "1" }}
-        >
-          {loading ? <Loading /> : "Submit"}
-        </button>
+        <button type="submit" className="btn btn-primary"></button>
       </form>
     </div>
   )
