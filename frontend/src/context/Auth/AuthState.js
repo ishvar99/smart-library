@@ -5,7 +5,7 @@ import {
   USER_LOADED,
   LOGIN_SUCCESS,
   LOGIN_FAIL,
-  LOADING,
+  AUTH_LOADING,
   UPDATE_USER,
   LOGOUT,
   AUTH_ERROR,
@@ -24,7 +24,7 @@ const AuthState = (props) => {
   const [state, dispatch] = useReducer(AuthReducer, intialState)
   const loadUser = async () => {
     try {
-      dispatch({ type: LOADING, payload: true })
+      dispatch({ type: AUTH_LOADING, payload: true })
       const response = await axios.get("/api/v1/auth/me")
       dispatch({ type: USER_LOADED, payload: response.data })
     } catch (error) {
@@ -33,7 +33,7 @@ const AuthState = (props) => {
   }
   const registerUser = async (formData) => {
     try {
-      dispatch({ type: LOADING, payload: true })
+      dispatch({ type: AUTH_LOADING, payload: true })
       const response = await axios.post(
         "/api/v1/auth/register",
         JSON.stringify(formData),
@@ -46,25 +46,8 @@ const AuthState = (props) => {
       dispatch({ type: REGISTER_SUCCESS, payload: response.data })
       loadUser()
     } catch (err) {
-      console.log(err.response)
+      console.log(err)
       dispatch({ type: REGISTER_FAIL, payload: err.response.data.error })
-    }
-  }
-  const updateUser = async (id, formData) => {
-    dispatch({ type: LOADING, payload: true })
-    try {
-      const response = await axios.put(
-        `/api/v1/user/${id}`,
-        JSON.stringify(formData),
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      )
-      dispatch({ type: UPDATE_USER, payload: response })
-    } catch (e) {
-      console.log(e)
     }
   }
   const logout = async () => {
@@ -77,7 +60,7 @@ const AuthState = (props) => {
   }
   const loginUser = async (formData) => {
     try {
-      dispatch({ type: LOADING, payload: true })
+      dispatch({ type: AUTH_LOADING, payload: true })
       const response = await axios.post(
         "/api/v1/auth/login",
         JSON.stringify(formData),
@@ -104,7 +87,7 @@ const AuthState = (props) => {
         loginUser,
         loadUser,
         logout,
-        updateUser,
+
         error: state.error,
       }}
     >

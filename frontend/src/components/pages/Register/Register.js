@@ -1,8 +1,9 @@
 import React, { useState, useContext, useEffect } from "react"
 import validator from "validator"
 import "./register.scss"
-import Loading from "../../utils/Loading/Loading.jsx"
+
 import AuthContext from "../../../context/Auth/AuthContext"
+import { Loader } from "../../utils/Loader/Loader"
 export const Register = (props) => {
   const context = useContext(AuthContext)
   const [loading, setLoading] = useState(context.loading)
@@ -103,73 +104,72 @@ export const Register = (props) => {
     })
   }, [])
   return (
-    <div className="Register">
-      <form noValidate onSubmit={handleFormSubmit}>
-        {errorMsg.status ? (
-          <div
-            className={`error-div text-${errorMsg.color}`}
-            style={{ textAlign: "center" }}
-          >
-            <h6> There was a problem</h6>
-            <h6>{errorMsg.msg}</h6>
+    <>
+      {loading ? <Loader /> : null}
+      <div className="Register">
+        <form noValidate onSubmit={handleFormSubmit}>
+          {errorMsg.status ? (
+            <div
+              className={`error-div text-${errorMsg.color}`}
+              style={{ textAlign: "center" }}
+            >
+              <h6> There was a problem</h6>
+              <h6>{errorMsg.msg}</h6>
+            </div>
+          ) : null}
+          <h3>Register</h3>
+          <div className="form-group">
+            <label>Name</label>
+            <input
+              type="text"
+              name="uname"
+              value={inputvalue.name}
+              onChange={handleChange}
+            />
           </div>
-        ) : null}
-        <h3>Register</h3>
-        <div className="form-group">
-          <label>Name</label>
-          <input
-            type="text"
-            name="uname"
-            value={inputvalue.name}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="form-group">
-          <label>Age</label>
-          <input
-            type="number"
-            name="age"
-            value={inputvalue.age}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="form-group">
-          <label>Email</label>
-          <input
-            type="email"
-            name="email"
-            value={inputvalue.email}
-            onChange={handleChange}
-          />
-        </div>
+          <div className="form-group">
+            <label>Age</label>
+            <input
+              type="number"
+              name="age"
+              value={inputvalue.age}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="form-group">
+            <label>Email</label>
+            <input
+              type="email"
+              name="email"
+              value={inputvalue.email}
+              onChange={handleChange}
+            />
+          </div>
 
-        <div className="form-group">
-          <label>Password</label>
-          <input
-            type="password"
-            name="password"
-            value={inputvalue.password}
-            onChange={handleChange}
-          />
-        </div>
+          <div className="form-group">
+            <label>Password</label>
+            <input
+              type="password"
+              name="password"
+              value={inputvalue.password}
+              onChange={handleChange}
+            />
+          </div>
 
-        <button
-          variant="primary"
-          type="submit"
-          style={{ opacity: loading ? "0.7" : "1" }}
-        >
-          {loading ? <Loading /> : "Submit"}
-        </button>
-        <p className="text-muted">
-          By continuing, you agree to the Terms and Conditions of Use and
-          Privacy Notice.
-        </p>
-        <hr />
-        <div className="part-2">
-          <p>Existing user!</p>
-          <p>Login to continue</p>
-        </div>
-      </form>
-    </div>
+          <button variant="primary" type="submit">
+            Register
+          </button>
+          <p className="text-muted">
+            By continuing, you agree to the Terms and Conditions of Use and
+            Privacy Notice.
+          </p>
+          <hr />
+          <div className="part-2">
+            <p>Existing user!</p>
+            <p>Login to continue</p>
+          </div>
+        </form>
+      </div>
+    </>
   )
 }

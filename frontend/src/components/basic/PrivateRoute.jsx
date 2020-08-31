@@ -1,14 +1,11 @@
-import React, { useContext } from "react"
-import AuthContext from "../../context/Auth/AuthContext"
+import React from "react"
 import { Redirect, Route } from "react-router-dom"
 const PrivateRoute = ({ component: Component, ...rest }) => {
-  const context = useContext(AuthContext)
-  const { isAuthenticated, loading } = context
   return (
     <Route
       {...rest}
       render={(props) =>
-        !isAuthenticated && !loading ? (
+        !localStorage.getItem("loggedIn") ? (
           <Redirect to="/login" />
         ) : (
           <Component {...props} />

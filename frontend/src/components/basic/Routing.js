@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useContext } from "react"
 import { Switch, Route } from "react-router-dom"
 import { Home } from "../pages/Home/Home"
 import { Login } from "../pages/Login/Login"
@@ -9,7 +9,9 @@ import { ManageGenre } from "../pages/ManageGenre/ManageGenre"
 import { Books } from "../pages/Books/Books"
 import { Book } from "../pages/Book/Book"
 import PrivateRoute from "../basic/PrivateRoute"
+import AuthContext from "../../context/Auth/AuthContext"
 export const Routing = () => {
+  const { isAuthenticated } = useContext(AuthContext)
   return (
     <Switch>
       <Route exact path="/" component={Home}></Route>
