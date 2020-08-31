@@ -65,11 +65,13 @@ export const Header = () => {
                     Profile
                   </Link>
                 </li>
-                <li className="nav-item">
-                  <Link to="/genre" className="nav-link">
-                    Add Genre
-                  </Link>
-                </li>
+                {user.role == 2 ? (
+                  <li className="nav-item">
+                    <Link to="/genre" className="nav-link">
+                      Add Genre
+                    </Link>
+                  </li>
+                ) : null}
                 <li className="nav-item">
                   <Link to="/book" className="nav-link">
                     Add Book

@@ -11,14 +11,14 @@ export const Profile = () => {
   return (
     <>
       {loading ? <Loader /> : null}
-      <div className='Profile container my-3'>
-        <div className='row'>
-          <div className='col-lg-3'>
+      <div className="Profile container my-3">
+        <div className="row">
+          <div className="col-lg-3">
             <Hello />
             <ProfileSidebar />
             <SignUpFormAuthorCard />
           </div>
-          <div className='col-lg-9'>
+          <div className="col-lg-9">
             <ProfileContainer />
           </div>
         </div>
