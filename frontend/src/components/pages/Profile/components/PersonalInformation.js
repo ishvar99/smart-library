@@ -1,5 +1,4 @@
 import React, { useState, useContext, useEffect } from "react"
-import { Loader } from "../../../utils/Loader/Loader"
 import { Card, Form, Button, Col } from "react-bootstrap"
 import AuthContext from "../../../../context/Auth/AuthContext"
 export const PersonalInformation = () => {
@@ -37,6 +36,7 @@ export const PersonalInformation = () => {
   }
   return (
     <>
+      {/* {loading ? <Loader /> : null} */}
       <div className="tabContent" id="PersonalInformation">
         <Card className="p-3">
           <Card.Title>

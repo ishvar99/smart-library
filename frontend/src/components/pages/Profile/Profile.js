@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react"
+import React, { useContext } from "react"
 import "./profile.scss"
 import { Hello } from "./components/Hello"
 import { ProfileSidebar } from "./components/ProfileSidebar"
@@ -7,8 +7,7 @@ import { SignUpFormAuthorCard } from "./components/SignUpFormAuthorCard"
 import { Loader } from "../../utils/Loader/Loader"
 import AuthContext from "../../../context/Auth/AuthContext"
 export const Profile = () => {
-  const context = useContext(AuthContext)
-  const { loading } = context
+  const { loading } = useContext(AuthContext)
   return (
     <>
       {loading ? <Loader /> : null}
