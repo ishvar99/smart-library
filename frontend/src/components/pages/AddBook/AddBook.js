@@ -29,7 +29,7 @@ export const AddBook = () => {
       setMsg({ data: `${book.title} successfully added!`, type: "success" })
     }
     setTimeout(() => {
-      setMsg("")
+      setMsg(null)
     }, 5000)
   }, [book, error])
   useEffect(() => {

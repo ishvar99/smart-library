@@ -19,16 +19,14 @@ exports.getGenre = (req, res) => {
 }
 
 exports.createGenre = (req, res) => {
-  console.log("create genre", req.body)
   let newGenre = new Genre(req.body)
   newGenre.save((err, genre) => {
     if (err) {
       console.log(err)
       return res.status(400).json({
-        error: "Error saving into the database!",
+        error: "An error occurred, possibly this genre already exists!",
       })
     }
-    console.log(genre)
     return res.json(genre)
   })
 }
