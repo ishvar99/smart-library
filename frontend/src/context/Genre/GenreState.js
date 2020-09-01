@@ -6,7 +6,8 @@ import axios from "axios"
 const GenreState = (props) => {
   const intialState = {
     loading: false,
-    genres: [],
+    genres: null,
+    genre: null,
     error: null,
   }
 
@@ -24,7 +25,6 @@ const GenreState = (props) => {
           },
         }
       )
-      console.log(response)
       dispatch({ type: GENRE_ADD, payload: response.data })
     } catch (err) {
       console.log(err)
@@ -48,6 +48,7 @@ const GenreState = (props) => {
         addGenre,
         fetchGenres,
         genres: state.genres,
+        genre: state.genre,
         error: state.error,
       }}
     >
