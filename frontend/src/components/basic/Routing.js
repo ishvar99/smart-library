@@ -8,7 +8,7 @@ import { AddBook } from "../pages/AddBook/AddBook"
 import { ManageGenre } from "../pages/ManageGenre/ManageGenre"
 import { Books } from "../pages/Books/Books"
 import { Book } from "../pages/Book/Book"
-import PrivateRoute from "../basic/PrivateRoute"
+import PrivateRoute from "./PrivateRoute"
 import AuthContext from "../../context/Auth/AuthContext"
 export const Routing = () => {
   const { isAuthenticated } = useContext(AuthContext)

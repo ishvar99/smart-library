@@ -1,11 +1,12 @@
 import React, { useReducer } from "react"
-import { GENRE_ADD, GENRE_ERROR, GENRE_LOADING } from "../types"
+import { GENRE_ADD, GENRE_ERROR, GENRE_LOADING, GENRE_FETCH } from "../types"
 import GenreReducer from "./GenreReducers"
 import GenreContext from "./GenreContext"
 import axios from "axios"
 const GenreState = (props) => {
   const intialState = {
     loading: false,
+    genres: [],
     error: null,
   }
 
@@ -13,8 +14,6 @@ const GenreState = (props) => {
 
   const addGenre = async (userId, name) => {
     try {
-      console.log(userId)
-      console.log(name)
       dispatch({ type: GENRE_LOADING, payload: true })
       const response = await axios.post(
         `/api/v1/genre/create/${userId}`,
@@ -32,12 +31,23 @@ const GenreState = (props) => {
       dispatch({ type: GENRE_ERROR, payload: err.response.data.error })
     }
   }
+  const fetchGenres = async () => {
+    try {
+      dispatch({ type: GENRE_LOADING, payload: true })
+      const response = await axios.get("/api/v1/genres")
+      dispatch({ type: GENRE_FETCH, payload: response.data })
+    } catch (err) {
+      dispatch({ type: GENRE_ERROR, payload: err.response.data.error })
+    }
+  }
 
   return (
     <GenreContext.Provider
       value={{
         loading: state.loading,
         addGenre,
+        fetchGenres,
+        genres: state.genres,
         error: state.error,
       }}
     >
