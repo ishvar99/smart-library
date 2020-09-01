@@ -4,6 +4,7 @@ const { ObjectId } = mongoose.Schema.Types
 const bookSchema = new mongoose.Schema({
   title: {
     type: String,
+    unique: true,
     trim: true,
     required: true,
   },
