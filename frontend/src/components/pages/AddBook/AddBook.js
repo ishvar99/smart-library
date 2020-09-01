@@ -1,12 +1,15 @@
 import React, { useContext, useState, useEffect } from "react"
-import axios from "axios"
 import AuthContext from "../../../context/Auth/AuthContext"
 import BookContext from "../../../context/Book/BookContext"
+import GenreContext from "../../../context/Genre/GenreContext"
 import { Loader } from "../../utils/Loader/Loader"
 export const AddBook = () => {
   const authContext = useContext(AuthContext)
   const bookContext = useContext(BookContext)
+  const genreContext = useContext(GenreContext)
   const { user } = authContext
+  const { fetchGenres, genres } = genreContext
+  const genreLoading = genreContext.loading
   const { loading, addBook, error, book } = bookContext
   const [title, setTitle] = useState("")
   const [description, setDescription] = useState("")
@@ -15,19 +18,23 @@ export const AddBook = () => {
   const [msg, setMsg] = useState()
   const [genresList, setGenresList] = useState([])
   useEffect(() => {
+    if (genres) {
+      setGenresList(genres)
+    }
+  }, [genres])
+  useEffect(() => {
     if (error) {
       setMsg({ data: error, type: "danger" })
     } else if (book) {
       setMsg({ data: `${book.title} successfully added!`, type: "success" })
     }
     setTimeout(() => {
-      setMsg("")
+      setMsg(null)
     }, 5000)
   }, [book, error])
   useEffect(() => {
     async function loadGenres() {
-      const response = await axios.get("/api/v1/genres")
-      setGenresList(response.data)
+      await fetchGenres()
     }
     loadGenres()
   }, [])
@@ -53,7 +60,7 @@ export const AddBook = () => {
   }
   return (
     <>
-      {loading ? <Loader /> : null}
+      {loading || genreLoading ? <Loader /> : null}
       <div className="container" style={{ marginTop: "50px" }}>
         {msg ? (
           <div

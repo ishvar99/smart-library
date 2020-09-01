@@ -1,10 +1,19 @@
-import { GENRE_ADD, GENRE_ERROR, GENRE_LOADING } from "../types"
+import { GENRE_ADD, GENRE_ERROR, GENRE_LOADING, GENRE_FETCH } from "../types"
 
 export default (state, action) => {
   switch (action.type) {
     case GENRE_ADD: {
       return {
         ...state,
+        loading: false,
+        error: null,
+        genre: action.payload,
+      }
+    }
+    case GENRE_FETCH: {
+      return {
+        ...state,
+        genres: action.payload,
         loading: false,
         error: null,
       }
