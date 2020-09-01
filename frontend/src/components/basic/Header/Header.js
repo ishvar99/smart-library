@@ -2,10 +2,11 @@ import React, { useContext, Fragment, useEffect } from "react"
 import { Navbar, Nav } from "react-bootstrap"
 import { Link, useHistory } from "react-router-dom"
 import AuthContext from "../../../context/Auth/AuthContext"
+import { Loader } from "../../utils/Loader/Loader"
 export const Header = () => {
   let history = useHistory()
-  const context = useContext(AuthContext)
-  const { isAuthenticated, user, loadUser, logout } = context
+  const authContext = useContext(AuthContext)
+  const { isAuthenticated, user, loadUser, logout, loading } = authContext
   const logoutUser = async () => {
     try {
       await logout()
@@ -22,6 +23,7 @@ export const Header = () => {
   }, [])
   return (
     <>
+      {loading ? <Loader /> : null}
       <div className="Header">
         <Navbar
           collapseOnSelect

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react"
 import "./trending.scss"
 import axios from "axios"
-import { Link } from "react-router-dom"
 
 export const Trending = () => {
   const [booksList, setBooksList] = useState([])
