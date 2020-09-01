@@ -1,7 +1,6 @@
 import React, { useState, useContext, useEffect } from "react"
 import validator from "validator"
 import "./register.scss"
-
 import AuthContext from "../../../context/Auth/AuthContext"
 import { Loader } from "../../utils/Loader/Loader"
 export const Register = (props) => {
